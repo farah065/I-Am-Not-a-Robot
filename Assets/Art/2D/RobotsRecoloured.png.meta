@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: cac01e1aa9c4fe040b99b374d7f5f435
+guid: e12979bf489245444ac2adb0ee1ceeb8
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -21,7 +21,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 16
+  spritePixelsToUnits: 6
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -97,353 +97,309 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_0
+      name: RobotsRecoloured_0
       rect:
         serializedVersion: 2
         x: 0
         y: 48
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4b578cbac62ca2a4caf7644f353ad996
-      internalID: -1614258329
+      spriteID: 6c91f11e58e254046806d80ab4c4758a
+      internalID: -1073540418
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_1
+      name: RobotsRecoloured_1
       rect:
         serializedVersion: 2
         x: 16
         y: 48
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7b777abbe2b86e440a6af74b39e643f2
-      internalID: -726096738
+      spriteID: d00a195971df32e49a00ce9358350561
+      internalID: -1260176058
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_2
+      name: RobotsRecoloured_2
       rect:
         serializedVersion: 2
         x: 32
         y: 48
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ecf729a81784c8e4990298b14f30e394
-      internalID: -1730817618
+      spriteID: ae04712381d4998408226aa4541a13bd
+      internalID: 2089326799
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_3
+      name: RobotsRecoloured_3
       rect:
         serializedVersion: 2
         x: 48
         y: 48
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: af5bdcbcc4b086541b671b7d7a2ba4da
-      internalID: -1221526964
+      spriteID: 043f4d86859e406479585362c53bad8b
+      internalID: -716429505
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_4
+      name: RobotsRecoloured_4
       rect:
         serializedVersion: 2
         x: 0
         y: 32
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ef1d1f1a6f809db4fb50dbf7f5f225a0
-      internalID: -1986513796
+      spriteID: ddffb17fb7b9bd44da873598002f785c
+      internalID: -1526137717
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_5
+      name: RobotsRecoloured_5
       rect:
         serializedVersion: 2
         x: 16
         y: 32
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 586c532a1b568454b9cd05fdb241464c
-      internalID: -653304316
+      spriteID: a338d187e8850464d91cd41054a9b28a
+      internalID: -174492840
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_6
+      name: RobotsRecoloured_6
       rect:
         serializedVersion: 2
         x: 32
         y: 32
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7ded3f21ca5303c4186b5d27d9bdbceb
-      internalID: -1304299569
+      spriteID: f894b1f2dc24dc3488a85537c341228a
+      internalID: 378197786
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_7
+      name: RobotsRecoloured_7
       rect:
         serializedVersion: 2
         x: 48
         y: 32
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 01bd7b92a9efa784e9bfdbf1eec55e67
-      internalID: -142449086
+      spriteID: a58d4f2264097b94e8ef624ca574c3d3
+      internalID: 1869969560
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_8
+      name: RobotsRecoloured_8
       rect:
         serializedVersion: 2
         x: 0
         y: 16
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: be5c63100fc13bd4daec0ebab960cfa1
-      internalID: 1093091261
+      spriteID: b1c57886de9493a49af07adfaab0c862
+      internalID: 842596333
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_9
+      name: RobotsRecoloured_9
       rect:
         serializedVersion: 2
         x: 16
         y: 16
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f948de52985d7d7459f6094e028d6511
-      internalID: 274317499
+      spriteID: 3f56411ff0751364087b134fa9fff538
+      internalID: 1038511746
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_10
+      name: RobotsRecoloured_10
       rect:
         serializedVersion: 2
         x: 32
         y: 16
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9e066a778b9dfbe4aaec1878c06fb6e0
-      internalID: 1176405323
+      spriteID: 5262c3aff261707428803c1ffdb59925
+      internalID: 2145179451
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_11
+      name: RobotsRecoloured_11
       rect:
         serializedVersion: 2
         x: 48
         y: 16
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 83656848b36e1ba47a7a783907674332
-      internalID: -30689456
+      spriteID: 068f38c465c9ab541a7edee18d63e54f
+      internalID: -292337333
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_12
+      name: RobotsRecoloured_12
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9220cfd1451fb99418ef87e94eb32111
-      internalID: 241671864
+      spriteID: d390a1f1201a03b4eb4d7db2ed09ad71
+      internalID: -182459853
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_13
+      name: RobotsRecoloured_13
       rect:
         serializedVersion: 2
         x: 16
         y: 0
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a7b7d914108846848b34a95d16113452
-      internalID: -1874711038
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_14
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 6c5172c9305adda48be769af682f8c0f
-      internalID: -1363828389
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Green Robot + Enemy Update - Original_15
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d5424821df680b34f8451bcd765897e2
-      internalID: 1954714328
+      spriteID: 78c3c4e29b12be84f99d8c0ed9b1216c
+      internalID: -1572986436
       vertices: []
       indices: 
       edges: []
@@ -452,7 +408,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 51c14ffa4b47e2847ad897c94f9e5cac
+    spriteID: 9f70e874a800f31468bcbe07aa70e3f7
     internalID: 0
     vertices: []
     indices: 
@@ -464,22 +420,20 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":16.0,"y":16.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      Green Robot + Enemy Update - Original_0: -1614258329
-      Green Robot + Enemy Update - Original_1: -726096738
-      Green Robot + Enemy Update - Original_10: 1176405323
-      Green Robot + Enemy Update - Original_11: -30689456
-      Green Robot + Enemy Update - Original_12: 241671864
-      Green Robot + Enemy Update - Original_13: -1874711038
-      Green Robot + Enemy Update - Original_14: -1363828389
-      Green Robot + Enemy Update - Original_15: 1954714328
-      Green Robot + Enemy Update - Original_2: -1730817618
-      Green Robot + Enemy Update - Original_3: -1221526964
-      Green Robot + Enemy Update - Original_4: -1986513796
-      Green Robot + Enemy Update - Original_5: -653304316
-      Green Robot + Enemy Update - Original_6: -1304299569
-      Green Robot + Enemy Update - Original_7: -142449086
-      Green Robot + Enemy Update - Original_8: 1093091261
-      Green Robot + Enemy Update - Original_9: 274317499
+      RobotsRecoloured_0: -1073540418
+      RobotsRecoloured_1: -1260176058
+      RobotsRecoloured_10: 2145179451
+      RobotsRecoloured_11: -292337333
+      RobotsRecoloured_12: -182459853
+      RobotsRecoloured_13: -1572986436
+      RobotsRecoloured_2: 2089326799
+      RobotsRecoloured_3: -716429505
+      RobotsRecoloured_4: -1526137717
+      RobotsRecoloured_5: -174492840
+      RobotsRecoloured_6: 378197786
+      RobotsRecoloured_7: 1869969560
+      RobotsRecoloured_8: 842596333
+      RobotsRecoloured_9: 1038511746
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
