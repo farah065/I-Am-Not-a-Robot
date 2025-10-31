@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 6db2c6022e2ff2e439d3dd913f9af6b1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 306772
+  packageName: Billboarding and Scrolling Shader Graphs
+  packageVersion: 1.0.5
+  assetPath: Assets/Pixagonal Games/Billboard&ScrollingShaderGraphs/Settings/URP-HighFidelity.asset
+  uploadId: 755808

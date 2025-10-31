@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9fca34210c1b1b64584efe25004d4bf7
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 112000000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 306772
+  packageName: Billboarding and Scrolling Shader Graphs
+  packageVersion: 1.0.5
+  assetPath: Assets/Pixagonal Games/Billboard&ScrollingShaderGraphs/Scenes/Sample
+    Scene (URP)/LightingData.asset
+  uploadId: 755808

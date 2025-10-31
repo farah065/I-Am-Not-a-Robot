@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e4a100a82178df345a82ab4726c0d6b5
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 625f186215c104763be7675aa2d941aa, type: 3}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 306772
+  packageName: Billboarding and Scrolling Shader Graphs
+  packageVersion: 1.0.5
+  assetPath: Assets/Pixagonal Games/Billboard&ScrollingShaderGraphs/Shader Graphs/Billboard
+    Shader Graph Lit.shadergraph
+  uploadId: 755808

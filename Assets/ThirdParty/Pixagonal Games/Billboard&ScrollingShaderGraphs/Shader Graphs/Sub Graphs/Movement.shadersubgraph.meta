@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 932e7c45c405be64fa03347a0dec58ac
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 60072b568d64c40a485e0fc55012dc9f, type: 3}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 306772
+  packageName: Billboarding and Scrolling Shader Graphs
+  packageVersion: 1.0.5
+  assetPath: Assets/Pixagonal Games/Billboard&ScrollingShaderGraphs/Shader Graphs/Sub
+    Graphs/Movement.shadersubgraph
+  uploadId: 755808

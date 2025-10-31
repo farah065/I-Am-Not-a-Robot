@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b2310acb910cc974faf50eb30cb7c5ee
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 306772
+  packageName: Billboarding and Scrolling Shader Graphs
+  packageVersion: 1.0.5
+  assetPath: Assets/Pixagonal Games/Billboard&ScrollingShaderGraphs/Prefabs/Terrain.prefab
+  uploadId: 755808

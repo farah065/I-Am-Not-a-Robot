@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: fcdb0a95300852d438a4149a38182a6f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 306772
+  packageName: Billboarding and Scrolling Shader Graphs
+  packageVersion: 1.0.5
+  assetPath: Assets/Pixagonal Games/Billboard&ScrollingShaderGraphs/Materials/Billboard
+    Shader Material  Unlit.mat
+  uploadId: 755808

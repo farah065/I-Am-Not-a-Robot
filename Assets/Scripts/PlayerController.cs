@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _ySize = 1;
     [SerializeField] private float _zSize = 1;
 
+    [SerializeField] private ChairController _chairController;
+    [SerializeField] private MonitorController _monitorController;
 
     private InputAction _moveAction;
     private InputAction _interactAction;
@@ -76,60 +78,74 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
-        Vector3 forward = _cineCam.transform.forward;
-        Vector3 right = _cineCam.transform.right;
-
-        forward.y = 0f;
-        right.y = 0f;
-
-        forward.Normalize();
-        right.Normalize();
-
-        Vector3 desiredMove = forward * _moveInput.y + right * _moveInput.x;
-        desiredMove.Normalize();
-
-        Vector3 velocity = desiredMove * _moveSpeed;
-        velocity.y = _rb.linearVelocity.y;
-        _rb.linearVelocity = velocity;
-
-        if (desiredMove.sqrMagnitude > 0f)
+        if (!_chairController.IsPlayerSitting)
         {
-            Quaternion lookRot = Quaternion.LookRotation(desiredMove);
-            _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, lookRot, Time.fixedDeltaTime * 10f));
+            Vector3 forward = _cineCam.transform.forward;
+            Vector3 right = _cineCam.transform.right;
+
+            forward.y = 0f;
+            right.y = 0f;
+
+            forward.Normalize();
+            right.Normalize();
+
+            Vector3 desiredMove = forward * _moveInput.y + right * _moveInput.x;
+            desiredMove.Normalize();
+
+            Vector3 velocity = desiredMove * _moveSpeed;
+            velocity.y = _rb.linearVelocity.y;
+            _rb.linearVelocity = velocity;
+
+            if (desiredMove.sqrMagnitude > 0f)
+            {
+                Quaternion lookRot = Quaternion.LookRotation(desiredMove);
+                _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, lookRot, Time.fixedDeltaTime * 10f));
+            }
+        }
+        else if (_moveInput.sqrMagnitude > 0.01f)
+        {
+            _chairController.StandUp();
         }
     }
 
     private void HandleInteract(InputAction.CallbackContext context)
     {
-        Vector3 camForward = _cineCam.transform.forward;
-        camForward.y = 0f;
-        camForward.Normalize();
-
-        Vector3 boxCenter = transform.position + camForward * _forwardOffset + Vector3.up * _verticalOffset;
-        Vector3 boxHalfExtents = new Vector3(_xSize / 2, _ySize / 2, _zSize / 2);
-
-        Debug.Log("INTERACT");
-
-        // Get all colliders overlapping this oriented box
-        Collider[] hits = Physics.OverlapBox(boxCenter, boxHalfExtents, Quaternion.LookRotation(camForward));
-
-        if (hits.Length > 0)
+        if (!_chairController.IsPlayerSitting)
         {
-            Debug.Log($"Found {hits.Length} colliders in box.");
-            foreach (Collider hit in hits)
+            Vector3 camForward = _cineCam.transform.forward;
+            camForward.y = 0f;
+            camForward.Normalize();
+
+            Vector3 boxCenter = transform.position + camForward * _forwardOffset + Vector3.up * _verticalOffset;
+            Vector3 boxHalfExtents = new Vector3(_xSize / 2, _ySize / 2, _zSize / 2);
+
+            Debug.Log("INTERACT");
+
+            // Get all colliders overlapping this oriented box
+            Collider[] hits = Physics.OverlapBox(boxCenter, boxHalfExtents, Quaternion.LookRotation(camForward));
+
+            if (hits.Length > 0)
             {
-                IInteractable interactable = hit.GetComponentInParent<IInteractable>();
-                if (interactable != null)
+                Debug.Log($"Found {hits.Length} colliders in box.");
+                foreach (Collider hit in hits)
                 {
-                    Debug.Log($"Interacting with {hit.name}");
-                    interactable.Interact();
-                    break; // interact with first valid target
+                    IInteractable interactable = hit.GetComponentInParent<IInteractable>();
+                    if (interactable != null)
+                    {
+                        Debug.Log($"Interacting with {hit.name}");
+                        interactable.Interact();
+                        break; // interact with first valid target
+                    }
                 }
+            }
+            else
+            {
+                Debug.Log("No interactables found.");
             }
         }
         else
         {
-            Debug.Log("No interactables found.");
+            _monitorController.Interact();
         }
     }
 }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0b6362423a7b4814c98ca52d569122ff
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 306772
+  packageName: Billboarding and Scrolling Shader Graphs
+  packageVersion: 1.0.5
+  assetPath: Assets/Pixagonal Games/Billboard&ScrollingShaderGraphs/Settings/URP-Balanced.asset
+  uploadId: 755808

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c76f335809c18114ca2485207b1970eb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 306772
+  packageName: Billboarding and Scrolling Shader Graphs
+  packageVersion: 1.0.5
+  assetPath: Assets/Pixagonal Games/Billboard&ScrollingShaderGraphs/Materials/Smooth
+    Scrolling Arrows Lit.mat
+  uploadId: 755808
