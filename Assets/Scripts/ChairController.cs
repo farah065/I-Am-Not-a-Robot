@@ -35,14 +35,14 @@ public class ChairController : MonoBehaviour, IInteractable
         sitSequence.Append(_deskCamera.transform.DOMove(_deskCamera.transform.position + new Vector3(0, -1f, 0), 0.5f))
             .PrependInterval(0.75f);
         sitSequence.Play();
-
-
     }
 
     public void StandUp()
     {
         IsPlayerSitting = false;
         _deskCamera.Priority = 0;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         StartCoroutine(StandUpCoroutine());
     }
 

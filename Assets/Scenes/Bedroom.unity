@@ -276,6 +276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IsMonitorOn: 0
   _monitorScreen: {fileID: 1227602256}
+  _deskCamera: {fileID: 615091818}
 --- !u!1 &152541715
 GameObject:
   m_ObjectHideFlags: 0
@@ -3725,7 +3726,7 @@ Transform:
   m_GameObject: {fileID: 615091816}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 20.35, y: 6.5, z: 9.16}
+  m_LocalPosition: {x: 20.35, y: 6.5, z: 9.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
