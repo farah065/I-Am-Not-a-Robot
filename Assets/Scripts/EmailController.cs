@@ -16,4 +16,9 @@ public class EmailController : MonoBehaviour
         _landingUI.SetActive(true);
         _emailUI.SetActive(false);
     }
+
+    private void OnEnable()
+    {
+        CloseEmail();
+    }
 }

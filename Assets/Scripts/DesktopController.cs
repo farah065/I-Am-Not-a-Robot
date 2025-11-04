@@ -11,7 +11,6 @@ public class DesktopController : MonoBehaviour
 
     public void CloseEmailApp()
     {
-        _emailAppUI.GetComponent<EmailController>().CloseEmail();
         _emailAppUI.SetActive(false);
     }
 }
