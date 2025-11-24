@@ -70,7 +70,6 @@ public class PlayerController : MonoBehaviour
         Gizmos.matrix = Matrix4x4.identity;
     }
 
-
     private void FixedUpdate()
     {
         HandleMovement();
@@ -104,7 +103,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (_moveInput.sqrMagnitude > 0.01f)
         {
-            _chairController.StandUp();
+            //_chairController.StandUp();
         }
     }
 
@@ -143,7 +142,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("No interactables found.");
             }
         }
-        else
+        else if (_monitorController.IsMonitorOn == false)
         {
             _monitorController.Interact();
         }
