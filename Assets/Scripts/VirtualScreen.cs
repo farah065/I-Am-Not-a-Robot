@@ -29,9 +29,4 @@ public class VirtualScreen : GraphicRaycaster
             }
         }
     }
-
-    public void Test()
-    {
-        Debug.Log("Clicked!");
-    }
 }
