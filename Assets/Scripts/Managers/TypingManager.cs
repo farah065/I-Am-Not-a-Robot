@@ -3,9 +3,10 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine.InputSystem.Controls;
 
-public class TypingManager : MonoBehaviour
+public class TypingManager : Singleton<TypingManager>
 {
     public string Typed = "";
+    [SerializeField] private Player2D _player;
     private Enemy _currentTarget = null;
     private float _accuracyMultiplier = 1f;
 
@@ -73,7 +74,7 @@ public class TypingManager : MonoBehaviour
                 if (Typed.Length == targetWord.Length)
                 {
                     Debug.Log("WORD COMPLETE: " + targetWord);
-                    _currentTarget.TakeDamage(targetWord.Length, _accuracyMultiplier);
+                    _player.FireBullet(_currentTarget.transform.position, targetWord.Length, _accuracyMultiplier, _currentTarget);
 
                     Typed = "";
                     _currentTarget = null;

@@ -10,20 +10,29 @@ public class Enemy : MonoBehaviour
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private TMP_Text _currentWordText;
     [SerializeField] private List<string> _words = new List<string>();
+    [SerializeField] private Transform _centrePoint;
+    private Vector3 _direction;
 
-    private void Update()
+    private void Start()
     {
-        // set rigidbody velocity towards player until within 1 unit distance
-        Vector3 direction = (Spawner.Instance.PlayerPosition.position - transform.position).normalized;
-        float distance = Vector3.Distance(Spawner.Instance.PlayerPosition.position, transform.position);
-        if (distance > 1f)
-        {
-            _rb.linearVelocity = direction * _speed;
-        }
-        else
-        {
-            _rb.linearVelocity = Vector2.zero;
-        }
+        _direction = (Spawner.Instance.PlayerPosition.position - _centrePoint.position).normalized;
+    }
+
+    private void FixedUpdate()
+    {
+        _direction = (Spawner.Instance.PlayerPosition.position - _centrePoint.position).normalized;
+        float distance = Vector3.Distance(Spawner.Instance.PlayerPosition.position, _centrePoint.position);
+        _rb.linearVelocity = _direction * _speed;
+    }
+
+    private void OnDrawGizmos()
+    {
+        // draw the distance between enemy and player
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(_centrePoint.position, Spawner.Instance.PlayerPosition.position);
+        // draw the direction vector
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(_centrePoint.position, _centrePoint.position + _direction * 2f);
     }
 
     public void SetWords(List<string> words)
@@ -96,5 +105,15 @@ public class Enemy : MonoBehaviour
     {
         Spawner.Instance.RemoveEnemy(this);
         Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            Debug.Log("Enemy reached the player!");
+            Spawner.Instance.RemoveEnemy(this);
+            Destroy(gameObject);
+        }
     }
 }

@@ -9,11 +9,10 @@ public class Spawner : Singleton<Spawner>
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private float _spawnInterval = 2f;
     [SerializeField] private int _totalEnemiesToSpawn = 20;
+    [SerializeField] private Transform[] _spawnPoints;
     private List<string> _words;
     private List<string> _usedWords;
     private Trie _trie;
-    private Vector3[] _spawnPositions;
-    public float SpawnRadius = 5f;
     public List<Enemy> Enemies;
 
     private void Start()
@@ -22,19 +21,6 @@ public class Spawner : Singleton<Spawner>
         _usedWords = new List<string>();
         _trie = new Trie();
         Enemies = new List<Enemy>();
-
-        // spawn positions in 8 directions (N, NE, E, SE, S, SW, W, NW)
-        _spawnPositions = new Vector3[]
-        {
-            new Vector3(0, SpawnRadius, 0), // N
-            new Vector3(SpawnRadius / Mathf.Sqrt(2), SpawnRadius / Mathf.Sqrt(2), 0), // NE
-            new Vector3(SpawnRadius, 0, 0), // E
-            new Vector3(SpawnRadius / Mathf.Sqrt(2), -SpawnRadius / Mathf.Sqrt(2), 0), // SE
-            new Vector3(0, -SpawnRadius, 0), // S
-            new Vector3(-SpawnRadius / Mathf.Sqrt(2), -SpawnRadius / Mathf.Sqrt(2), 0), // SW
-            new Vector3(-SpawnRadius, 0, 0), // W
-            new Vector3(-SpawnRadius / Mathf.Sqrt(2), SpawnRadius / Mathf.Sqrt(2), 0)  // NW
-        };
 
         StartCoroutine(SpawnCoroutine());
     }
@@ -78,7 +64,7 @@ public class Spawner : Singleton<Spawner>
 
     private void SpawnEnemy()
     {
-        Vector3 spawnPosition = _spawnPositions[Random.Range(0, _spawnPositions.Length)] + PlayerPosition.position;
+        Vector3 spawnPosition = _spawnPoints[Random.Range(0, _spawnPoints.Length)].position;
         GameObject enemyObject = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
         Enemy enemy = enemyObject.GetComponent<Enemy>();
         AssignWordsToEnemy(enemy);
