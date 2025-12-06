@@ -8,7 +8,7 @@ public class ShopManager : Singleton<ShopManager>
     [SerializeField] private CardController[] _cardControllers;
     private List<int> _usedPowerupIndices;
 
-    private void EnableShop()
+    public void EnableShop()
     {
         _shopUI.SetActive(true);
         _usedPowerupIndices = new List<int>();
@@ -26,7 +26,7 @@ public class ShopManager : Singleton<ShopManager>
         }
     }
 
-    private void DisableShop()
+    public void DisableShop()
     {
         _shopUI.SetActive(false);
     }

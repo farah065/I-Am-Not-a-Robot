@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cdd72fe5c2cd254e994ffb4c9514941, type: 3}
-  m_Name: CoinMagnet
+  m_Script: {fileID: 11500000, guid: ec19a653abb2cfc4cb6c6423368f01f7, type: 3}
+  m_Name: Enemy
   m_EditorClassIdentifier: 
-  TypableName: magnet
-  Type: 6
-  Icon: {fileID: 371133279, guid: 5488c6bde8dc07548910bb8199a1044c, type: 3}
-  Description: Lorem Ipsum something something something
-  Cost: 3
+  MaxHp: 10
+  BaseSpeed: 0.5

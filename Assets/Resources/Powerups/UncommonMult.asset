@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TypableName: ucmult
   Type: 8
-  Icon: {fileID: 0}
+  Icon: {fileID: 371133279, guid: 5488c6bde8dc07548910bb8199a1044c, type: 3}
   Description: Lorem Ipsum something something something
   Cost: 3

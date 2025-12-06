@@ -4,25 +4,28 @@ using TMPro;
 
 public class Enemy : MonoBehaviour
 {
-    public float Hp = 30f;
+    public float CurrentHp = 30f;
+    public EnemyData _enemyData;
     public string CurrentWord = "";
-    [SerializeField] private float _speed = 1f;
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private TMP_Text _currentWordText;
     [SerializeField] private List<string> _words = new List<string>();
     [SerializeField] private Transform _centrePoint;
+    private float _currentSpeed;
     private Vector3 _direction;
 
     private void Start()
     {
         _direction = (Spawner.Instance.PlayerPosition.position - _centrePoint.position).normalized;
+        CurrentHp = _enemyData.MaxHp;
+        _currentSpeed = _enemyData.BaseSpeed;
     }
 
     private void FixedUpdate()
     {
         _direction = (Spawner.Instance.PlayerPosition.position - _centrePoint.position).normalized;
         float distance = Vector3.Distance(Spawner.Instance.PlayerPosition.position, _centrePoint.position);
-        _rb.linearVelocity = _direction * _speed;
+        _rb.linearVelocity = _direction * _currentSpeed;
     }
 
     private void OnDrawGizmos()
@@ -46,11 +49,11 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage, float multiplier)
     {
-        Hp -= damage * multiplier;
+        CurrentHp -= damage * multiplier;
 
         UpdateCurrentWord();
 
-        if (Hp <= 0)
+        if (CurrentHp <= 0)
         {
             Die();
         }
@@ -111,7 +114,7 @@ public class Enemy : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Enemy reached the player!");
+            collision.GetComponent<Player2D>().TakeDamage();
             Spawner.Instance.RemoveEnemy(this);
             Destroy(gameObject);
         }

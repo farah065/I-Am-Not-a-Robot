@@ -238,9 +238,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac78f19d1d6c0d846823268ba6fe3c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Hp: 15
+  CurrentHp: 30
+  _enemyData: {fileID: 11400000, guid: 5f6f05fcbc7392b4d8e9d5a684c0feed, type: 2}
   CurrentWord: 
-  _speed: 0.5
   _rb: {fileID: 7532323180128337744}
   _currentWordText: {fileID: 392165768416747091}
   _words: []

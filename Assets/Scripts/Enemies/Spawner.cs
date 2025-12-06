@@ -50,6 +50,14 @@ public class Spawner : Singleton<Spawner>
             _totalEnemiesToSpawn--;
             yield return new WaitForSeconds(_spawnInterval);
         }
+
+        while (Enemies.Count > 0)
+        {
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(GameManager.Instance.OnWaveEnd());
     }
 
     public void RemoveWordFromTrie(string word)
@@ -73,7 +81,7 @@ public class Spawner : Singleton<Spawner>
 
     private void AssignWordsToEnemy(Enemy enemy)
     {
-        int lettersNeeded = Mathf.CeilToInt(enemy.Hp);
+        int lettersNeeded = Mathf.CeilToInt(enemy.CurrentHp);
         List<string> enemyWords = new List<string>();
         while (lettersNeeded > 0)
         {
