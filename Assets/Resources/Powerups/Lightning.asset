@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Lightning
   m_EditorClassIdentifier: 
   TypableName: lightning
+  DisplayName: Lightning
   Type: 1
   Icon: {fileID: 371133279, guid: 5488c6bde8dc07548910bb8199a1044c, type: 3}
   Description: Lorem Ipsum something something something

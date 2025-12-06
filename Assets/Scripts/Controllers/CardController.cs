@@ -4,19 +4,51 @@ using TMPro;
 
 public class CardController : MonoBehaviour
 {
+    public string NormalisedName;
+    public PowerupData PowerupData;
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private TMP_Text _descriptionText;
     [SerializeField] private TMP_Text _costText;
     [SerializeField] private Image _image;
-    [SerializeField] private PowerupData _powerupData;
 
     public void SetPowerupData(PowerupData powerupData)
     {
-        _powerupData = powerupData;
+        PowerupData = powerupData;
+        NormalisedName = PowerupData.DisplayName.ToLower().Replace(" ", "");
 
-        _nameText.text = _powerupData.TypableName;
-        _descriptionText.text = _powerupData.Description;
-        _costText.text = _powerupData.Cost.ToString();
-        _image.sprite = _powerupData.Icon;
+        _nameText.text = PowerupData.DisplayName;
+        _descriptionText.text = PowerupData.Description;
+        _costText.text = PowerupData.Cost.ToString();
+        _image.sprite = PowerupData.Icon;
+    }
+
+    public void HighlightPrefix(int length)
+    {
+        if (string.IsNullOrEmpty(PowerupData.DisplayName))
+            return;
+
+        int count = 0;
+        string result = "";
+
+        foreach (char c in PowerupData.DisplayName)
+        {
+            if (c != ' ' && count < length)
+            {
+                // This character contributes to the normalized prefix
+                result += $"<color=#E0F8CF>{c}</color>";
+                count++;
+            }
+            else
+            {
+                result += c;
+            }
+        }
+
+        _nameText.text = result;
+    }
+
+    public void ResetHighlight()
+    {
+        _nameText.text = PowerupData.DisplayName;
     }
 }

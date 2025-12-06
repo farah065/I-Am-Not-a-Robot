@@ -22,6 +22,12 @@ public class Spawner : Singleton<Spawner>
         _trie = new Trie();
         Enemies = new List<Enemy>();
 
+        StartWave();
+    }
+
+    public void StartWave()
+    {
+        _totalEnemiesToSpawn = 2;
         StartCoroutine(SpawnCoroutine());
     }
 

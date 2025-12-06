@@ -10,7 +10,8 @@ public class TypingManager : Singleton<TypingManager>
     private Enemy _currentTarget = null;
     private float _accuracyMultiplier = 1f;
 
-    private Trie _trie => Spawner.Instance.Trie;
+    private Trie _enemyTrie => Spawner.Instance.Trie;
+    private Trie _shopTrie => ShopManager.Instance.Trie;
 
     private void Update()
     {
@@ -39,12 +40,24 @@ public class TypingManager : Singleton<TypingManager>
     private void HandleInput(char c)
     {
         Typed += c;
-        UpdateEnemyHighlights();
+        UpdateHighlights();
 
+        if (!ShopManager.Instance.IsShopOpen)
+        {
+            HandleInputForEnemies();
+        }
+        else
+        {
+            HandleInputForShop();
+        }
+    }
+
+    private void HandleInputForEnemies()
+    {
         if (_currentTarget == null)
         {
             // PHASE 1: no target selected → use trie
-            List<string> matches = _trie.Autocomplete(Typed);
+            List<string> matches = _enemyTrie.Autocomplete(Typed);
 
             if (matches.Count == 1)
             {
@@ -56,9 +69,12 @@ public class TypingManager : Singleton<TypingManager>
             else if (matches.Count == 0)
             {
                 Debug.Log("Wrong letter — no prefix matches.");
-                _accuracyMultiplier = 1f;
+                if (!ShopManager.Instance.IsShopOpen)
+                {
+                    _accuracyMultiplier = 1f;
+                }
                 Typed = Typed.Substring(0, Typed.Length - 1);
-                UpdateEnemyHighlights();
+                UpdateHighlights();
             }
         }
         else
@@ -83,12 +99,63 @@ public class TypingManager : Singleton<TypingManager>
             else
             {
                 Debug.Log("Wrong letter!");
-                _accuracyMultiplier = 1f;
+                if (!ShopManager.Instance.IsShopOpen)
+                {
+                    _accuracyMultiplier = 1f;
+                }
                 Typed = Typed.Substring(0, Typed.Length - 1);
-                UpdateEnemyHighlights();
+                UpdateHighlights();
             }
         }
     }
+
+    private void HandleInputForShop()
+    {
+        // Normalize player input (no spaces, lowercase)
+        string normalizedTyped = Typed.ToLower();
+
+        // Check powerup matches
+        List<string> matches = _shopTrie.Autocomplete(normalizedTyped);
+
+        // --- CASE 1: unique match -> user typed a full powerup name ---
+        if (matches.Count == 1)
+        {
+            string matchedName = matches[0];
+            CardController card = ShopManager.Instance.FindCardByNormalizedName(matchedName);
+
+            if (card == null)
+                return;
+
+            // Check if the user has fully typed the name
+            if (normalizedTyped.Length == matchedName.Length)
+            {
+                Debug.Log("POWERUP PURCHASED: " + card.NormalisedName);
+                ShopManager.Instance.Purchase(card);
+
+                // Reset typing
+                Typed = "";
+                UpdateHighlights();
+
+                return;
+            }
+        }
+
+        // --- CASE 2: player typed something invalid (no card matches this prefix) ---
+        if (matches.Count == 0)
+        {
+            Debug.Log("Shop typo ignored (no accuracy penalty).");
+
+            // Remove the last letter typed
+            Typed = Typed.Substring(0, Typed.Length - 1);
+
+            UpdateHighlights();
+            return;
+        }
+
+        // --- CASE 3: multiple matches => continue waiting ---
+        // Do nothing (highlights already updated)
+    }
+
 
     private int CountCorrectPrefix(string typed, string target)
     {
@@ -101,7 +168,7 @@ public class TypingManager : Singleton<TypingManager>
         return count;
     }
 
-    private void UpdateEnemyHighlights()
+    private void UpdateHighlights()
     {
         foreach (Enemy enemy in Spawner.Instance.Enemies)
         {
@@ -115,9 +182,37 @@ public class TypingManager : Singleton<TypingManager>
 
             int prefix = CountCorrectPrefix(Typed, word);
             if (prefix == Typed.Length)
+            {
                 enemy.HighlightPrefix(prefix);
+            }
             else
+            {
                 enemy.ResetHighlight();
+            }
+        }
+
+        if (ShopManager.Instance.IsShopOpen)
+        {
+            foreach (CardController card in ShopManager.Instance.CardControllers)
+            {
+                string word = card.NormalisedName;
+
+                if (string.IsNullOrEmpty(word))
+                {
+                    card.ResetHighlight();
+                    continue;
+                }
+
+                int prefix = CountCorrectPrefix(Typed.ToLower(), word);
+                if (prefix == Typed.Length)
+                {
+                    card.HighlightPrefix(prefix);
+                }
+                else
+                {
+                    card.ResetHighlight();
+                }
+            }
         }
     }
 

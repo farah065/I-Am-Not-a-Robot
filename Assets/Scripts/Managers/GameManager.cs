@@ -70,8 +70,10 @@ public class GameManager : Singleton<GameManager>
         ShopManager.Instance.EnableShop();
     }
 
-    private IEnumerator OnShopClosed()
+    public IEnumerator OnShopClosed()
     {
         yield return new WaitForSeconds(1f);
+        IncrementWave();
+        Spawner.Instance.StartWave();
     }
 }

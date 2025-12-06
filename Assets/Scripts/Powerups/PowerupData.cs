@@ -20,6 +20,7 @@ public enum PowerupType
 public class PowerupData : ScriptableObject
 {
     public string TypableName;
+    public string DisplayName;
     public PowerupType Type;
     public Sprite Icon;
     public string Description;
