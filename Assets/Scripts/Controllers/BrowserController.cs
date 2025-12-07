@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class BrowserController : MonoBehaviour
+public class BrowserController : Singleton<BrowserController>
 {
     [SerializeField] private GameObject _searchPage;
     [SerializeField] private GameObject _valdivian;
@@ -10,6 +10,8 @@ public class BrowserController : MonoBehaviour
 
     [SerializeField] private TMP_InputField _email;
     [SerializeField] private TMP_InputField _password;
+
+    [SerializeField] private GameObject _game;
 
     public void OpenSearchPage()
     {
@@ -41,7 +43,15 @@ public class BrowserController : MonoBehaviour
 
     public void ShowGame()
     {
-        Debug.Log("Showing the game!");
+        _game.SetActive(true);
+        _captcha.SetActive(false);
+        GameManager.Instance.InitialiseGame();
+    }
+
+    public void HideGame()
+    {
+        _captcha.SetActive(true);
+        _game.SetActive(false);
     }
 
     private void OpenValdivianPage()

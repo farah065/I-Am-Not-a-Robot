@@ -6,8 +6,8 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
-    public float CurrentHp = 30f;
-    public EnemyData _enemyData;
+    public float CurrentHp;
+    public EnemyData EnemyData;
     public string CurrentWord = "";
     public float FrozenTimer = 0f;
     [SerializeField] private Rigidbody2D _rb;
@@ -22,8 +22,8 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         _direction = (Spawner.Instance.PlayerPosition.position - _centrePoint.position).normalized;
-        CurrentHp = _enemyData.MaxHp;
-        _currentSpeed = _enemyData.BaseSpeed;
+        CurrentHp = EnemyData.MaxHp;
+        _currentSpeed = EnemyData.BaseSpeed;
         _hpText.text = CurrentHp.ToString();
     }
 
@@ -66,7 +66,7 @@ public class Enemy : MonoBehaviour
         _hpText.text = CurrentHp.ToString();
 
         // Update HP bar width based on current HP percentage
-        float hpPercentage = CurrentHp / _enemyData.MaxHp;
+        float hpPercentage = CurrentHp / EnemyData.MaxHp;
         RectTransform hpBarRect = _hpBar.GetComponent<RectTransform>();
 
         // Set the new width of the hpBar
@@ -128,7 +128,7 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        if (Random.value < _enemyData.BaseCoinDropChance && Spawner.Instance.Coins.Count < 3 && GameManager.Instance.CurrentArea != Area.Core)
+        if (Random.value < EnemyData.BaseCoinDropChance && Spawner.Instance.Coins.Count < 3 && GameManager.Instance.CurrentArea != Area.Core)
         {
             Spawner.Instance.SpawnCoin(this);
         }

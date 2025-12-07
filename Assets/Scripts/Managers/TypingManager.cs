@@ -23,7 +23,7 @@ public class TypingManager : Singleton<TypingManager>
     public void Initialise()
     {
         Typed = "";
-        _accuracyMultiplier = 1f;
+        ResetAccuracyMultiplier();
         _currentTarget = null;
         _currentCoinTarget = null;
         _currentInventoryTarget = null;

@@ -34,6 +34,7 @@ public class ShopManager : Singleton<ShopManager>
         }
 
         ResetHighlight();
+        TypingManager.Instance.Typed = "";
     }
 
     private bool IsPowerupInInventory(PowerupData powerupData)

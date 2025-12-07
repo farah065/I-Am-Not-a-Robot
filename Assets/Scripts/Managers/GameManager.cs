@@ -38,7 +38,7 @@ public class GameManager : Singleton<GameManager>
         InitialiseGame();
     }
 
-    private void InitialiseGame()
+    public void InitialiseGame()
     {
         _currentWave = 1;
 
@@ -46,6 +46,7 @@ public class GameManager : Singleton<GameManager>
         Player2D.Instance.Initialise();
         InventoryManager.Instance.ClearInventory();
         TypingManager.Instance.Initialise();
+        Spawner.Instance.Initialise();
 
         for (int i = 0; i < _areaTilemaps.Length; i++)
         {
@@ -54,7 +55,6 @@ public class GameManager : Singleton<GameManager>
 
         _enemyData.MaxHp = 10;
         _enemyData.BaseSpeed = 0.5f;
-        _enemyData.BaseCoinDropChance = 0.3f;
     }
 
     private void IncrementWave()
@@ -77,6 +77,7 @@ public class GameManager : Singleton<GameManager>
         else
         {
             _currentWave++;
+            TypingManager.Instance.Typed = "";
             WaveScaleUp();
             Spawner.Instance.StartWave();
         }

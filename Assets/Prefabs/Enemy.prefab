@@ -773,8 +773,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentHp: 30
-  _enemyData: {fileID: 11400000, guid: 5f6f05fcbc7392b4d8e9d5a684c0feed, type: 2}
+  EnemyData: {fileID: 11400000, guid: 5f6f05fcbc7392b4d8e9d5a684c0feed, type: 2}
   CurrentWord: 
+  FrozenTimer: 0
   _rb: {fileID: 7532323180128337744}
   _currentWordText: {fileID: 392165768416747091}
   _words: []

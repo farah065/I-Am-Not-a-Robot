@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections;
 using UnityEngine;
 
 public class Player2D : Singleton<Player2D>
@@ -68,7 +69,7 @@ public class Player2D : Singleton<Player2D>
             HealthUIController.Instance.UpdateHealth(Hp);
             if (Hp <= 0)
             {
-                Die();
+                StartCoroutine(Die());
             }
         }
     }
@@ -79,10 +80,12 @@ public class Player2D : Singleton<Player2D>
         HealthUIController.Instance.UpdateHealth(Hp);
     }
 
-    private void Die()
+    private IEnumerator Die()
     {
         _spriteRenderer.enabled = false;
         _deathEffect.Play();
+        yield return new WaitForSeconds(2f);
+        BrowserController.Instance.HideGame();
     }
 
     public void AddCoins(int amount)

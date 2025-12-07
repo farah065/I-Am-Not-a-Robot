@@ -124,6 +124,7 @@ public class Trie
     // Printing
     public void PrintAllWords()
     {
+        Debug.Log("PRINTING WORDS");
         List<string> results = new List<string>();
         CollectWords(root, "", results);
         foreach (string word in results)

@@ -12,6 +12,7 @@ public class Spawner : Singleton<Spawner>
     [SerializeField] private GameObject _coinPrefab;
     [SerializeField] private float _spawnInterval = 2f;
     [SerializeField] private Transform[] _spawnPoints;
+    [SerializeField] private EnemyData _enemyData;
     private List<string> _words;
     private List<string> _usedWords;
     private Trie _enemyTrie;
@@ -22,12 +23,12 @@ public class Spawner : Singleton<Spawner>
 
     private void Start()
     {
-        FillWordsListFromFile();
-        Initialise();
+        //Initialise();
     }
 
     public void Initialise()
     {
+        FillWordsListFromFile();
         _usedWords = new List<string>();
 
         _enemyTrie = new Trie();
@@ -93,6 +94,7 @@ public class Spawner : Singleton<Spawner>
     public void AddWordToTrie(string word)
     {
         _enemyTrie.Insert(word);
+        _enemyTrie.PrintAllWords();
     }
 
     private void SpawnEnemy()
@@ -125,7 +127,7 @@ public class Spawner : Singleton<Spawner>
 
     private void AssignWordsToEnemy(Enemy enemy)
     {
-        int lettersNeeded = Mathf.CeilToInt(enemy.CurrentHp);
+        int lettersNeeded = Mathf.CeilToInt(_enemyData.MaxHp);
         List<string> enemyWords = new List<string>();
         while (lettersNeeded > 0)
         {
@@ -142,10 +144,7 @@ public class Spawner : Singleton<Spawner>
             enemyWords.Add(finalWord);
             _usedWords.Add(finalWord);
 
-            // Insert modified word into trie (NOT base word)
-            _enemyTrie.Insert(finalWord);
-
-            lettersNeeded -= finalWord.Length;
+            lettersNeeded -= baseWord.Length;
         }
 
         enemy.SetWords(enemyWords);
