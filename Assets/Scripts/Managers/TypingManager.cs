@@ -7,10 +7,11 @@ public class TypingManager : Singleton<TypingManager>
 {
     public string Typed = "";
     [SerializeField] private Player2D _player;
+
+    private float _accuracyMultiplier = 1f;
     private Enemy _currentTarget = null;
     private Coin _currentCoinTarget = null;
     private PowerupData _currentInventoryTarget = null;
-    private float _accuracyMultiplier = 1f;
 
     private Trie _enemyTrie => Spawner.Instance.EnemyTrie;
     private Trie _shopTrie => ShopManager.Instance.Trie;
@@ -20,11 +21,14 @@ public class TypingManager : Singleton<TypingManager>
 
     private void Update()
     {
+        // check every key on the keyboard
         foreach (var key in Keyboard.current.allKeys)
         {
             if (key == null) continue;
+            // if it was pressed this frame
             if (key.wasPressedThisFrame)
             {
+                // get the character and handle input
                 char c = ConvertKey(key);
                 if (c != '\0') HandleInput(c);
             }
@@ -33,6 +37,7 @@ public class TypingManager : Singleton<TypingManager>
 
     private char ConvertKey(KeyControl key)
     {
+        // convert letter keys to chars
         if (key.name.Length == 1)
         {
             char c = key.name[0];
@@ -44,45 +49,57 @@ public class TypingManager : Singleton<TypingManager>
 
     private void HandleInput(char c)
     {
+        // Append character to typed string
         Typed += c;
         UpdateHighlights();
 
         if (!ShopManager.Instance.IsShopOpen)
         {
-            HandleInputForEnemies();
-            HandleInputForCoins();
-            HandleInputForInventory();
+            // if the shop isnt open, handle enemy/coin/inventory input
+            HandleInputForRound();
         }
         else
         {
+            // otherwise, handle shop input (cards and skip button)
             HandleInputForShop();
             HandleInputForShopSkip();
         }
     }
 
-    private void HandleInputForEnemies()
+    private void HandleInputForRound()
     {
-        // If no target yet
-        if (_currentTarget == null)
+        // if no target yet
+        if (_currentTarget == null && _currentCoinTarget == null && _currentInventoryTarget == null)
         {
             List<string> enemyMatches = _enemyTrie.Autocomplete(Typed);
             List<string> coinMatches = _coinTrie.Autocomplete(Typed);
-            List<string> inventoryMatches = InventoryManager.Instance.InventoryTrie.Autocomplete(Typed);
+            List<string> inventoryMatches = _inventoryTrie.Autocomplete(Typed);
 
-            // If exactly one enemy matches → lock target
-            if (enemyMatches.Count == 1)
+            // if exactly one enemy/coin/inventory slot matches, lock it as a target
+            if (enemyMatches.Count == 1 && coinMatches.Count == 0 && inventoryMatches.Count == 0)
             {
                 _currentTarget = Spawner.Instance.FindEnemyByWord(enemyMatches[0]);
-                Debug.Log("TARGET LOCKED: " + enemyMatches[0]);
+                return;
+            }
+            else if (coinMatches.Count == 1 && enemyMatches.Count == 0 && inventoryMatches.Count == 0)
+            {
+                _currentCoinTarget = Spawner.Instance.FindCoinByWord(coinMatches[0]);
+                return;
+            }
+            else if (inventoryMatches.Count == 1 && enemyMatches.Count == 0 && coinMatches.Count == 0)
+            {
+                string powerupName = inventoryMatches[0];
+                _currentInventoryTarget = InventoryManager.Instance.FindInventoryPowerup(powerupName);
                 return;
             }
 
-            // If no matches at all → typo (handled here only if zero coins too)
+            // if no matches at all, the user made a typo
             if (enemyMatches.Count == 0 && coinMatches.Count == 0 && inventoryMatches.Count == 0)
             {
-                Debug.Log("Wrong letter — matches no enemy or coin.");
+                // reset accuracy multiplier
                 _accuracyMultiplier = 1f;
 
+                // remove last typed character
                 Typed = Typed.Substring(0, Typed.Length - 1);
                 UpdateHighlights();
             }
@@ -90,172 +107,66 @@ public class TypingManager : Singleton<TypingManager>
             return;
         }
 
-        // If enemy IS targeted
-        string targetWord = _currentTarget.CurrentWord;
+        string targetWord;
+        // if enemy is targeted
+        if (_currentTarget != null)
+        {
+            targetWord = _currentTarget.CurrentWord;
+        }
+        else if (_currentCoinTarget != null)
+        {
+            targetWord = _currentCoinTarget.Word;
+        }
+        else if (_currentInventoryTarget != null)
+        {
+            targetWord = _currentInventoryTarget.TypableName;
+        }
+        else
+        {
+            return;
+        }
+
         int correctPrefix = CountCorrectPrefix(Typed, targetWord);
 
+        // if the number of correct letters equals the typed length so far, we havent made a typo yet
         if (correctPrefix == Typed.Length)
         {
-            if (Typed.Length == targetWord.Length)
+            // if the number of correct letters equals the target word length, we finished typing the word
+            if (correctPrefix == targetWord.Length)
             {
-                Debug.Log("WORD COMPLETE: " + targetWord);
+                // if enemy targeted
+                if (_currentTarget != null)
+                {
+                    // fire a bullet towards the enemy who had the word
+                    _player.FireBullet(_currentTarget.transform.position, targetWord.Length, _accuracyMultiplier, _currentTarget);
+                }
+                else if (_currentCoinTarget != null)
+                {
+                    Spawner.Instance.CollectCoin(_currentCoinTarget);
+                    _player.AddCoins(1);
+                }
+                else if (_currentInventoryTarget != null)
+                {
+                    InventoryManager.Instance.ApplyInventoryPowerup(_currentInventoryTarget);
+                }
 
-                _player.FireBullet(
-                    _currentTarget.transform.position,
-                    targetWord.Length,
-                    _accuracyMultiplier,
-                    _currentTarget
-                );
-
+                // reset typing state and target
                 Typed = "";
                 _currentTarget = null;
+                _currentCoinTarget = null;
+                _currentInventoryTarget = null;
             }
         }
         else
         {
-            Debug.Log("Wrong enemy letter!");
+            // typo detected, reset accuracy multiplier
             _accuracyMultiplier = 1f;
 
+            // remove last typed character
             Typed = Typed.Substring(0, Typed.Length - 1);
             UpdateHighlights();
         }
     }
-
-
-    private void HandleInputForCoins()
-    {
-        // If typing an enemy target, coins should not consume input
-        if (_currentTarget != null)
-            return;
-
-        List<string> coinMatches = _coinTrie.Autocomplete(Typed);
-        List<string> enemyMatches = _enemyTrie.Autocomplete(Typed);
-        List<string> inventoryMatches = InventoryManager.Instance.InventoryTrie.Autocomplete(Typed);
-
-        // If no matches anywhere, this is a true typo
-        if (coinMatches.Count == 0 && enemyMatches.Count == 0 && inventoryMatches.Count == 0)
-        {
-            Debug.Log("Wrong letter — no enemy/coin match.");
-            _accuracyMultiplier = 1f;
-
-            Typed = Typed.Substring(0, Typed.Length - 1);
-            UpdateHighlights();
-            return;
-        }
-
-        // If exactly one coin matches AND no enemies match, we treat coin as target
-        if (coinMatches.Count == 1 && enemyMatches.Count == 0)
-        {
-            Coin coin = Spawner.Instance.FindCoinByWord(coinMatches[0]);
-            if (coin == null) return;
-
-            int prefix = CountCorrectPrefix(Typed, coin.Word);
-
-            // Correct prefix
-            if (prefix == Typed.Length)
-            {
-                // Full match → collect coin!
-                if (Typed.Length == coin.Word.Length)
-                {
-                    Debug.Log("COIN COLLECTED: " + coin.Word);
-
-                    Spawner.Instance.CollectCoin(coin);
-                    _player.AddCoins(1);
-
-                    Typed = "";
-                    _currentCoinTarget = null;
-                    UpdateHighlights();
-                }
-                else
-                {
-                    _currentCoinTarget = coin;
-                }
-            }
-            else
-            {
-                // Mistyped letter
-                Debug.Log("Wrong coin letter!");
-                _accuracyMultiplier = 1f;
-                Typed = Typed.Substring(0, Typed.Length - 1);
-                UpdateHighlights();
-            }
-        }
-    }
-
-    private void HandleInputForInventory()
-    {
-        // Do not use inventory items inside shop
-        if (ShopManager.Instance.IsShopOpen)
-            return;
-
-        // If an enemy or coin is being typed, powerups should not consume input
-        if (_currentTarget != null || _currentCoinTarget != null)
-            return;
-
-        List<string> inventoryMatches = InventoryManager.Instance.InventoryTrie.Autocomplete(Typed);
-        List<string> enemyMatches = _enemyTrie.Autocomplete(Typed);
-        List<string> coinMatches = _coinTrie.Autocomplete(Typed);
-
-        // If no inventory matches AND no enemy matches AND no coin matches → true typo
-        if (inventoryMatches.Count == 0 && enemyMatches.Count == 0 && coinMatches.Count == 0)
-        {
-            Debug.Log("Wrong letter — no enemy/coin/inventory match.");
-            _accuracyMultiplier = 1f;
-
-            Typed = Typed.Substring(0, Typed.Length - 1);
-            UpdateHighlights();
-            return;
-        }
-
-        // If multiple inventory matches → keep waiting
-        if (inventoryMatches.Count > 1)
-            return;
-
-        // If exactly 1 match in inventory
-        if (inventoryMatches.Count == 1)
-        {
-            string powerupName = inventoryMatches[0];
-
-            // Check direct instance
-            PowerupData powerup = InventoryManager.Instance.FindInventoryPowerup(powerupName);
-            if (powerup == null)
-                return;
-
-            int prefix = CountCorrectPrefix(Typed, powerup.TypableName);
-
-            // Good prefix
-            if (prefix == Typed.Length)
-            {
-                // FULL WORD: USE POWERUP
-                if (Typed.Length == powerup.TypableName.Length)
-                {
-                    Debug.Log("USED POWERUP: " + powerup.TypableName);
-
-                    // TODO: Apply powerup effect here
-                    InventoryManager.Instance.ApplyInventoryPowerup(powerup);
-
-                    // consume input
-                    Typed = "";
-                    _currentInventoryTarget = null;
-                    UpdateHighlights();
-                }
-                else
-                {
-                    _currentInventoryTarget = powerup;
-                }
-            }
-            else
-            {
-                // Mistyped letter inside a powerup word
-                Debug.Log("Wrong inventory letter!");
-                _accuracyMultiplier = 1f;
-                Typed = Typed.Substring(0, Typed.Length - 1);
-                UpdateHighlights();
-            }
-        }
-    }
-
-
 
     private void HandleInputForShop()
     {
@@ -277,7 +188,6 @@ public class TypingManager : Singleton<TypingManager>
             // Check if the user has fully typed the name
             if (normalizedTyped.Length == matchedName.Length)
             {
-                Debug.Log("POWERUP PURCHASED: " + card.NormalisedName);
                 ShopManager.Instance.Purchase(card);
 
                 // Reset typing
@@ -291,8 +201,6 @@ public class TypingManager : Singleton<TypingManager>
         // --- CASE 2: player typed something invalid (no card matches this prefix) ---
         if (matches.Count == 0)
         {
-            Debug.Log("Shop typo ignored (no accuracy penalty).");
-
             if (!(normalizedTyped.StartsWith("s") || normalizedTyped.StartsWith("sk") || normalizedTyped.StartsWith("ski") || normalizedTyped.StartsWith("skip")))
             {
                 // Remove the last letter typed
@@ -312,7 +220,6 @@ public class TypingManager : Singleton<TypingManager>
         // if player typed "skip" fully, close shop
         if (Typed == "skip")
         {
-            Debug.Log("SHOP SKIPPED BY PLAYER.");
             ShopManager.Instance.DisableShop();
 
             // Reset typing
@@ -321,10 +228,11 @@ public class TypingManager : Singleton<TypingManager>
         }
     }
 
-
     private int CountCorrectPrefix(string typed, string target)
     {
         int count = 0;
+
+        // count matching characters from start
         for (int i = 0; i < typed.Length && i < target.Length; i++)
         {
             if (typed[i] == target[i]) count++;
@@ -373,6 +281,23 @@ public class TypingManager : Singleton<TypingManager>
                 coin.ResetHighlight();
         }
 
+        foreach (var slot in InventoryManager.Instance.InventorySlots)
+        {
+            if (slot.IsEmpty)
+            {
+                slot.ResetHighlight();
+                continue;
+            }
+
+            string word = slot.Name;
+            int prefix = CountCorrectPrefix(Typed, word);
+
+            if (prefix == Typed.Length)
+                slot.HighlightPrefix(prefix);
+            else
+                slot.ResetHighlight();
+        }
+
 
         if (ShopManager.Instance.IsShopOpen)
         {
@@ -407,25 +332,6 @@ public class TypingManager : Singleton<TypingManager>
             else
             {
                 ShopManager.Instance.ResetHighlight();
-            }
-        }
-        else
-        {
-            foreach (var slot in InventoryManager.Instance.GetComponentsInChildren<InventorySlotController>())
-            {
-                if (slot.IsEmpty)
-                {
-                    slot.ResetHighlight();
-                    continue;
-                }
-
-                string word = slot.Name;
-                int prefix = CountCorrectPrefix(Typed, word);
-
-                if (prefix == Typed.Length)
-                    slot.HighlightPrefix(prefix);
-                else
-                    slot.ResetHighlight();
             }
         }
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 public class InventoryManager : Singleton<InventoryManager>
 {
     public Trie InventoryTrie;
-    [SerializeField] private InventorySlotController[] _inventorySlots;
+    public InventorySlotController[] InventorySlots;
 
     private void Start()
     {
@@ -12,11 +12,11 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public void AddItemToInventory(PowerupData powerupData)
     {
-        for (int i = 0; i < _inventorySlots.Length; i++)
+        for (int i = 0; i < InventorySlots.Length; i++)
         {
-            if (_inventorySlots[i].IsEmpty)
+            if (InventorySlots[i].IsEmpty)
             {
-                _inventorySlots[i].SetItem(powerupData);
+                InventorySlots[i].SetItem(powerupData);
                 InventoryTrie.Insert(powerupData.TypableName);
                 break;
             }
@@ -25,7 +25,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public bool IsInventoryFull()
     {
-        foreach (var slot in _inventorySlots)
+        foreach (var slot in InventorySlots)
         {
             if (slot.IsEmpty)
                 return false;
@@ -46,5 +46,15 @@ public class InventoryManager : Singleton<InventoryManager>
     public void ApplyInventoryPowerup(PowerupData powerup)
     {
         Debug.Log("Used powerup: " + powerup.TypableName);
+        
+        InventoryTrie.Delete(powerup.TypableName);
+
+        foreach (var slot in InventorySlots)
+        {
+            if (!slot.IsEmpty && slot.Name == powerup.TypableName)
+            {
+                slot.EmptySlot();
+            }
+        }
     }
 }
