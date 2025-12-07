@@ -1941,7 +1941,6 @@ slice
 slide
 slight
 slip
-slow
 small
 smart
 smell

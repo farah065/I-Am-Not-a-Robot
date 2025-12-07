@@ -1,16 +1,21 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.UI;
+using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
     public float CurrentHp = 30f;
     public EnemyData _enemyData;
     public string CurrentWord = "";
+    public float FrozenTimer = 0f;
     [SerializeField] private Rigidbody2D _rb;
     [SerializeField] private TMP_Text _currentWordText;
     [SerializeField] private List<string> _words = new List<string>();
     [SerializeField] private Transform _centrePoint;
+    [SerializeField] private TMP_Text _hpText;
+    [SerializeField] private Image _hpBar;
     private float _currentSpeed;
     private Vector3 _direction;
 
@@ -19,30 +24,29 @@ public class Enemy : MonoBehaviour
         _direction = (Spawner.Instance.PlayerPosition.position - _centrePoint.position).normalized;
         CurrentHp = _enemyData.MaxHp;
         _currentSpeed = _enemyData.BaseSpeed;
+        _hpText.text = CurrentHp.ToString();
     }
 
     private void FixedUpdate()
     {
         if (Player2D.Instance.Hp > 0)
         {
-            _direction = (Spawner.Instance.PlayerPosition.position - _centrePoint.position).normalized;
-            float distance = Vector3.Distance(Spawner.Instance.PlayerPosition.position, _centrePoint.position);
-            _rb.linearVelocity = _direction * _currentSpeed;
+            if (FrozenTimer > 0f)
+            {
+                FrozenTimer -= Time.fixedDeltaTime;
+                _rb.linearVelocity = Vector2.zero;
+            }
+            else
+            {
+                _direction = (Spawner.Instance.PlayerPosition.position - _centrePoint.position).normalized;
+                float distance = Vector3.Distance(Spawner.Instance.PlayerPosition.position, _centrePoint.position);
+                _rb.linearVelocity = _direction * _currentSpeed;
+            }
         }
         else
         {
             _rb.linearVelocity = Vector2.zero;
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        // draw the distance between enemy and player
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(_centrePoint.position, Spawner.Instance.PlayerPosition.position);
-        // draw the direction vector
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(_centrePoint.position, _centrePoint.position + _direction * 2f);
     }
 
     public void SetWords(List<string> words)
@@ -57,6 +61,17 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage, float multiplier)
     {
         CurrentHp -= damage * multiplier;
+        // round hp to 1 decimal place
+        CurrentHp = Mathf.Round(CurrentHp * 10f) / 10f;
+        _hpText.text = CurrentHp.ToString();
+
+        // Update HP bar width based on current HP percentage
+        float hpPercentage = CurrentHp / _enemyData.MaxHp;
+        RectTransform hpBarRect = _hpBar.GetComponent<RectTransform>();
+
+        // Set the new width of the hpBar
+        float newWidth = hpBarRect.rect.width * hpPercentage; // Adjust the width based on the percentage
+        hpBarRect.sizeDelta = new Vector2(newWidth, hpBarRect.sizeDelta.y);
 
         UpdateCurrentWord();
 

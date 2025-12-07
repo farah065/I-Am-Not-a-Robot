@@ -15,6 +15,6 @@ MonoBehaviour:
   TypableName: autocorrect
   DisplayName: Autocorrect
   Type: 9
-  Icon: {fileID: 371133279, guid: 5488c6bde8dc07548910bb8199a1044c, type: 3}
-  Description: Lorem Ipsum something something something
+  Icon: {fileID: 21300000, guid: 2e3dcad790abeb9458deab5adda0df5d, type: 3}
+  Description: Prevents accuracy dmg mult from resetting on typo. Automatically used.
   Cost: 0

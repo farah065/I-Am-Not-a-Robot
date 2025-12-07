@@ -15,6 +15,6 @@ MonoBehaviour:
   TypableName: bandage
   DisplayName: Bandage
   Type: 4
-  Icon: {fileID: 371133279, guid: 5488c6bde8dc07548910bb8199a1044c, type: 3}
-  Description: Lorem Ipsum something something something
+  Icon: {fileID: 21300000, guid: 3175f38512dc29e48981d6d292c849ee, type: 3}
+  Description: Heals one heart of damage.
   Cost: 0

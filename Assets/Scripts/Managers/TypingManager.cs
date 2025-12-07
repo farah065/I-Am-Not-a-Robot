@@ -2,11 +2,13 @@
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine.InputSystem.Controls;
+using TMPro;
 
 public class TypingManager : Singleton<TypingManager>
 {
     public string Typed = "";
     [SerializeField] private Player2D _player;
+    [SerializeField] private TMP_Text _accuracyMultiplierText;
 
     private float _accuracyMultiplier = 1f;
     private Enemy _currentTarget = null;
@@ -97,7 +99,7 @@ public class TypingManager : Singleton<TypingManager>
             if (enemyMatches.Count == 0 && coinMatches.Count == 0 && inventoryMatches.Count == 0)
             {
                 // reset accuracy multiplier
-                _accuracyMultiplier = 1f;
+                ResetAccuracyMultiplier();
 
                 // remove last typed character
                 Typed = Typed.Substring(0, Typed.Length - 1);
@@ -139,6 +141,9 @@ public class TypingManager : Singleton<TypingManager>
                 {
                     // fire a bullet towards the enemy who had the word
                     _player.FireBullet(_currentTarget.transform.position, targetWord.Length, _accuracyMultiplier, _currentTarget);
+                    // increase accuracy multiplier
+                    float newMult = Mathf.Min(_accuracyMultiplier + 0.05f, 2f);
+                    SetAccuracyMultiplier(newMult);
                 }
                 else if (_currentCoinTarget != null)
                 {
@@ -147,7 +152,7 @@ public class TypingManager : Singleton<TypingManager>
                 }
                 else if (_currentInventoryTarget != null)
                 {
-                    InventoryManager.Instance.ApplyInventoryPowerup(_currentInventoryTarget);
+                    InventoryManager.Instance.UsePowerup(_currentInventoryTarget);
                 }
 
                 // reset typing state and target
@@ -160,7 +165,7 @@ public class TypingManager : Singleton<TypingManager>
         else
         {
             // typo detected, reset accuracy multiplier
-            _accuracyMultiplier = 1f;
+            ResetAccuracyMultiplier();
 
             // remove last typed character
             Typed = Typed.Substring(0, Typed.Length - 1);
@@ -336,4 +341,22 @@ public class TypingManager : Singleton<TypingManager>
         }
     }
 
+    private void SetAccuracyMultiplier(float multiplier)
+    {
+        _accuracyMultiplier = multiplier;
+        _accuracyMultiplierText.text = "x" + _accuracyMultiplier.ToString("F2") + " dmg";
+    }
+
+    private void ResetAccuracyMultiplier()
+    {
+        PowerupData autocorrectPowerup = InventoryManager.Instance.FindInventoryPowerup("autocorrect");
+        if (autocorrectPowerup != null)
+        {
+            InventoryManager.Instance.UsePowerup(autocorrectPowerup);
+        }
+        else
+        {
+            SetAccuracyMultiplier(1f);
+        }
+    }
 }

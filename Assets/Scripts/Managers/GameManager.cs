@@ -82,6 +82,8 @@ public class GameManager : Singleton<GameManager>
 
     public IEnumerator OnWaveEnd()
     {
+        Player2D.Instance.ResetPowerupEffects();
+
         // Show wave end UI
         _waveEndText.text = "Wave " + _currentWave + " Complete!";
         _waveEndUI.SetActive(true);

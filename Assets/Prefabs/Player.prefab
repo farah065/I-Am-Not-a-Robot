@@ -138,6 +138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Coins: 0
+  Hp: 0
   IsTransitioning: 0
   HasReachedExit: 0
   _bulletPrefab: {fileID: 4469759220961572139, guid: 5a6b5a1f4741e9e45a919c2c8c58781c, type: 3}
@@ -249,7 +250,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:

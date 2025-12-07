@@ -17,7 +17,10 @@ public class InventoryManager : Singleton<InventoryManager>
             if (InventorySlots[i].IsEmpty)
             {
                 InventorySlots[i].SetItem(powerupData);
-                InventoryTrie.Insert(powerupData.TypableName);
+                if (powerupData.Type != PowerupType.Autocorrect)
+                {
+                    InventoryTrie.Insert(powerupData.TypableName);
+                }
                 break;
             }
         }
@@ -35,7 +38,7 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public PowerupData FindInventoryPowerup(string name)
     {
-        foreach (var slot in GetComponentsInChildren<InventorySlotController>())
+        foreach (var slot in InventorySlots)
         {
             if (!slot.IsEmpty && slot.Name == name)
                 return slot.PowerupData;
@@ -43,9 +46,16 @@ public class InventoryManager : Singleton<InventoryManager>
         return null;
     }
 
-    public void ApplyInventoryPowerup(PowerupData powerup)
+    public void UsePowerup(PowerupData powerup)
     {
-        Debug.Log("Used powerup: " + powerup.TypableName);
+        if (powerup.Type == PowerupType.Bandage)
+        {
+            Player2D.Instance.Heal();
+        }
+        if (powerup.Type == PowerupType.Freeze)
+        {
+            Player2D.Instance.CanFreeze = true;
+        }
         
         InventoryTrie.Delete(powerup.TypableName);
 

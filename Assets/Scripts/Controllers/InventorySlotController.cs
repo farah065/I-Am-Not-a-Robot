@@ -9,6 +9,7 @@ public class InventorySlotController : MonoBehaviour
     public PowerupData PowerupData;
     [SerializeField] private Image _icon;
     [SerializeField] private TMP_Text _nameText;
+    [SerializeField] private GameObject _nameContainer;
 
     public void SetItem(PowerupData powerupData)
     {
@@ -16,6 +17,15 @@ public class InventorySlotController : MonoBehaviour
         _icon.sprite = powerupData.Icon;
         _nameText.text = powerupData.TypableName;
         _icon.color = Color.white;
+
+        if (powerupData.Type == PowerupType.Autocorrect)
+        {
+            _nameContainer.SetActive(false);
+        }
+        else
+        {
+            _nameContainer.SetActive(true);
+        }
     }
 
     public void EmptySlot()
@@ -24,6 +34,7 @@ public class InventorySlotController : MonoBehaviour
         _icon.sprite = null;
         _nameText.text = "";
         _icon.color = new Color32(224, 248, 207, 255);
+        _nameContainer.SetActive(false);
     }
 
     public void HighlightPrefix(int length)

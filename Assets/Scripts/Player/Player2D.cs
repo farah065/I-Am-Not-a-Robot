@@ -7,6 +7,7 @@ public class Player2D : Singleton<Player2D>
     public int Hp;
     public bool IsTransitioning = false;
     public bool HasReachedExit = false;
+    public bool CanFreeze = false;
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _centrePoint;
     [SerializeField] private Animator _animator;
@@ -42,7 +43,12 @@ public class Player2D : Singleton<Player2D>
         Vector3 direction = (targetPosition - _centrePoint.position).normalized;
         GameObject bulletGameObj = Instantiate(_bulletPrefab, _centrePoint.position, Quaternion.LookRotation(Vector3.forward, direction));
         Bullet bullet = bulletGameObj.GetComponent<Bullet>();
-        bullet.Initialise(direction, damage, _multiplier, target);
+        bullet.Initialise(direction, damage, _multiplier, target, CanFreeze);
+    }
+
+    public void ResetPowerupEffects()
+    {
+        CanFreeze = false;
     }
 
     public void TakeDamage()
@@ -56,6 +62,12 @@ public class Player2D : Singleton<Player2D>
                 Die();
             }
         }
+    }
+
+    public void Heal()
+    {
+        Hp = Mathf.Min(Hp + 1, 3);
+        HealthUIController.Instance.UpdateHealth(Hp);
     }
 
     private void Die()
