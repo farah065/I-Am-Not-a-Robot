@@ -15,4 +15,14 @@ public class InventoryManager : Singleton<InventoryManager>
             }
         }
     }
+
+    public bool IsInventoryFull()
+    {
+        foreach (var slot in _inventorySlots)
+        {
+            if (slot.IsEmpty)
+                return false;
+        }
+        return true;
+    }
 }

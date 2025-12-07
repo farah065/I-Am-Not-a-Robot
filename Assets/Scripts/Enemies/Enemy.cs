@@ -106,6 +106,10 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        if (Random.value < _enemyData.BaseCoinDropChance && Spawner.Instance.Coins.Count < 3)
+        {
+            Spawner.Instance.SpawnCoin(this);
+        }
         Spawner.Instance.RemoveEnemy(this);
         Destroy(gameObject);
     }

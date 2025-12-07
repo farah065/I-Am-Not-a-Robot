@@ -8,10 +8,12 @@ public class TypingManager : Singleton<TypingManager>
     public string Typed = "";
     [SerializeField] private Player2D _player;
     private Enemy _currentTarget = null;
+    private Coin _currentCoinTarget = null;
     private float _accuracyMultiplier = 1f;
 
-    private Trie _enemyTrie => Spawner.Instance.Trie;
+    private Trie _enemyTrie => Spawner.Instance.EnemyTrie;
     private Trie _shopTrie => ShopManager.Instance.Trie;
+    private Trie _coinTrie => Spawner.Instance.CoinTrie;
 
     private void Update()
     {
@@ -45,69 +47,135 @@ public class TypingManager : Singleton<TypingManager>
         if (!ShopManager.Instance.IsShopOpen)
         {
             HandleInputForEnemies();
+            HandleInputForCoins();
         }
         else
         {
             HandleInputForShop();
+            HandleInputForShopSkip();
         }
     }
 
     private void HandleInputForEnemies()
     {
+        // If no target yet
         if (_currentTarget == null)
         {
-            // PHASE 1: no target selected → use trie
-            List<string> matches = _enemyTrie.Autocomplete(Typed);
+            List<string> enemyMatches = _enemyTrie.Autocomplete(Typed);
+            List<string> coinMatches = _coinTrie.Autocomplete(Typed);
 
-            if (matches.Count == 1)
+            // If exactly one enemy matches → lock target
+            if (enemyMatches.Count == 1)
             {
-                // Unique match found
-                _currentTarget = Spawner.Instance.FindEnemyByWord(matches[0]);
-                Debug.Log("TARGET LOCKED: " + matches[0]);
+                _currentTarget = Spawner.Instance.FindEnemyByWord(enemyMatches[0]);
+                Debug.Log("TARGET LOCKED: " + enemyMatches[0]);
                 return;
             }
-            else if (matches.Count == 0)
+
+            // If no matches at all → typo (handled here only if zero coins too)
+            if (enemyMatches.Count == 0 && coinMatches.Count == 0)
             {
-                Debug.Log("Wrong letter — no prefix matches.");
-                if (!ShopManager.Instance.IsShopOpen)
-                {
-                    _accuracyMultiplier = 1f;
-                }
+                Debug.Log("Wrong letter — matches no enemy or coin.");
+                _accuracyMultiplier = 1f;
+
                 Typed = Typed.Substring(0, Typed.Length - 1);
                 UpdateHighlights();
+            }
+
+            return;
+        }
+
+        // If enemy IS targeted
+        string targetWord = _currentTarget.CurrentWord;
+        int correctPrefix = CountCorrectPrefix(Typed, targetWord);
+
+        if (correctPrefix == Typed.Length)
+        {
+            if (Typed.Length == targetWord.Length)
+            {
+                Debug.Log("WORD COMPLETE: " + targetWord);
+
+                _player.FireBullet(
+                    _currentTarget.transform.position,
+                    targetWord.Length,
+                    _accuracyMultiplier,
+                    _currentTarget
+                );
+
+                Typed = "";
+                _currentTarget = null;
             }
         }
         else
         {
-            // PHASE 2: target already selected
-            string targetWord = _currentTarget.CurrentWord;
+            Debug.Log("Wrong enemy letter!");
+            _accuracyMultiplier = 1f;
 
-            int correctPrefix = CountCorrectPrefix(Typed, targetWord);
+            Typed = Typed.Substring(0, Typed.Length - 1);
+            UpdateHighlights();
+        }
+    }
 
-            if (correctPrefix == Typed.Length)
+
+    private void HandleInputForCoins()
+    {
+        // If typing an enemy target, coins should not consume input
+        if (_currentTarget != null)
+            return;
+
+        List<string> coinMatches = _coinTrie.Autocomplete(Typed);
+        List<string> enemyMatches = _enemyTrie.Autocomplete(Typed);
+
+        // If no matches anywhere, this is a true typo
+        if (coinMatches.Count == 0 && enemyMatches.Count == 0)
+        {
+            Debug.Log("Wrong letter — no enemy/coin match.");
+            _accuracyMultiplier = 1f;
+
+            Typed = Typed.Substring(0, Typed.Length - 1);
+            UpdateHighlights();
+            return;
+        }
+
+        // If exactly one coin matches AND no enemies match, we treat coin as target
+        if (coinMatches.Count == 1 && enemyMatches.Count == 0)
+        {
+            Coin coin = Spawner.Instance.FindCoinByWord(coinMatches[0]);
+            if (coin == null) return;
+
+            int prefix = CountCorrectPrefix(Typed, coin.Word);
+
+            // Correct prefix
+            if (prefix == Typed.Length)
             {
-                // Good letter
-                if (Typed.Length == targetWord.Length)
+                // Full match → collect coin!
+                if (Typed.Length == coin.Word.Length)
                 {
-                    Debug.Log("WORD COMPLETE: " + targetWord);
-                    _player.FireBullet(_currentTarget.transform.position, targetWord.Length, _accuracyMultiplier, _currentTarget);
+                    Debug.Log("COIN COLLECTED: " + coin.Word);
+
+                    Spawner.Instance.CollectCoin(coin);
+                    _player.AddCoins(1);
 
                     Typed = "";
-                    _currentTarget = null;
+                    _currentCoinTarget = null;
+                    UpdateHighlights();
+                }
+                else
+                {
+                    _currentCoinTarget = coin;
                 }
             }
             else
             {
-                Debug.Log("Wrong letter!");
-                if (!ShopManager.Instance.IsShopOpen)
-                {
-                    _accuracyMultiplier = 1f;
-                }
+                // Mistyped letter
+                Debug.Log("Wrong coin letter!");
+                _accuracyMultiplier = 1f;
                 Typed = Typed.Substring(0, Typed.Length - 1);
                 UpdateHighlights();
             }
         }
     }
+
 
     private void HandleInputForShop()
     {
@@ -145,8 +213,11 @@ public class TypingManager : Singleton<TypingManager>
         {
             Debug.Log("Shop typo ignored (no accuracy penalty).");
 
-            // Remove the last letter typed
-            Typed = Typed.Substring(0, Typed.Length - 1);
+            if (!(normalizedTyped.StartsWith("s") || normalizedTyped.StartsWith("sk") || normalizedTyped.StartsWith("ski") || normalizedTyped.StartsWith("skip")))
+            {
+                // Remove the last letter typed
+                Typed = Typed.Substring(0, Typed.Length - 1);
+            }
 
             UpdateHighlights();
             return;
@@ -154,6 +225,20 @@ public class TypingManager : Singleton<TypingManager>
 
         // --- CASE 3: multiple matches => continue waiting ---
         // Do nothing (highlights already updated)
+    }
+
+    private void HandleInputForShopSkip()
+    {
+        // if player typed "skip" fully, close shop
+        if (Typed == "skip")
+        {
+            Debug.Log("SHOP SKIPPED BY PLAYER.");
+            ShopManager.Instance.DisableShop();
+
+            // Reset typing
+            Typed = "";
+            UpdateHighlights();
+        }
     }
 
 
@@ -191,6 +276,24 @@ public class TypingManager : Singleton<TypingManager>
             }
         }
 
+        foreach (Coin coin in Spawner.Instance.Coins)
+        {
+            string word = coin.Word;
+
+            if (string.IsNullOrEmpty(word))
+            {
+                coin.ResetHighlight();
+                continue;
+            }
+
+            int prefix = CountCorrectPrefix(Typed, word);
+            if (prefix == Typed.Length)
+                coin.HighlightPrefix(prefix);
+            else
+                coin.ResetHighlight();
+        }
+
+
         if (ShopManager.Instance.IsShopOpen)
         {
             foreach (CardController card in ShopManager.Instance.CardControllers)
@@ -212,6 +315,18 @@ public class TypingManager : Singleton<TypingManager>
                 {
                     card.ResetHighlight();
                 }
+            }
+
+            // highlight skip button
+            string skipWord = "skip";
+            int skipPrefix = CountCorrectPrefix(Typed.ToLower(), skipWord);
+            if (skipPrefix == Typed.Length)
+            {
+                ShopManager.Instance.HighlightPrefix(skipPrefix);
+            }
+            else
+            {
+                ShopManager.Instance.ResetHighlight();
             }
         }
     }

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Player2D : MonoBehaviour
 {
+    public int Coins;
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _centrePoint;
     private int _hp;
@@ -9,6 +10,7 @@ public class Player2D : MonoBehaviour
     private void Start()
     {
         _hp = 3;
+        Coins = 0;
     }
 
     public void FireBullet(Vector3 targetPosition, int damage, float _multiplier, Enemy target)
@@ -23,5 +25,11 @@ public class Player2D : MonoBehaviour
     {
         _hp--;
         HealthUIController.Instance.UpdateHealth(_hp);
+    }
+
+    public void AddCoins(int amount)
+    {
+        Coins += amount;
+        CoinUIController.Instance.UpdateCoinCount(Coins);
     }
 }

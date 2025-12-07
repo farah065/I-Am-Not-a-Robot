@@ -67,7 +67,14 @@ public class GameManager : Singleton<GameManager>
         _waveEndUI.SetActive(false);
 
         // show shop
-        ShopManager.Instance.EnableShop();
+        if (!InventoryManager.Instance.IsInventoryFull() && _currentArea != Area.Core)
+        {
+            ShopManager.Instance.EnableShop();
+        }
+        else
+        {
+            yield return OnShopClosed();
+        }
     }
 
     public IEnumerator OnShopClosed()

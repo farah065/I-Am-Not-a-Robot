@@ -394,11 +394,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c296e7f7e1910094fa921c92118d88d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NormalisedName: 
+  PowerupData: {fileID: 0}
   _nameText: {fileID: 6375833014039261367}
   _descriptionText: {fileID: 3206320125152373030}
   _costText: {fileID: 4633567186933486028}
   _image: {fileID: 5971845289385810471}
-  _powerupData: {fileID: 0}
 --- !u!1 &6646212742586508492
 GameObject:
   m_ObjectHideFlags: 0
