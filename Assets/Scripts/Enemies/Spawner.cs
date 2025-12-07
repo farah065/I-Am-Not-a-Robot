@@ -69,10 +69,14 @@ public class Spawner : Singleton<Spawner>
         {
             yield return null;
         }
-        ClearAllCoins();
 
-        yield return new WaitForSeconds(1f);
-        StartCoroutine(GameManager.Instance.OnWaveEnd());
+        if (Player2D.Instance.Hp > 0)
+        {
+            ClearAllCoins();
+
+            yield return new WaitForSeconds(1f);
+            StartCoroutine(GameManager.Instance.OnWaveEnd());
+        }
     }
 
     public void RemoveWordFromTrie(string word)

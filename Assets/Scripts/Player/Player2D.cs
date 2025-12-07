@@ -1,20 +1,23 @@
+using NUnit.Framework;
 using UnityEngine;
 
-public class Player2D : MonoBehaviour
+public class Player2D : Singleton<Player2D>
 {
     public int Coins;
+    public int Hp;
     public bool IsTransitioning = false;
     public bool HasReachedExit = false;
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _centrePoint;
     [SerializeField] private Animator _animator;
     [SerializeField] private Rigidbody2D _rb;
-    private int _hp;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private ParticleSystem _deathEffect;
     private bool _canStop = false;
 
     private void Start()
     {
-        _hp = 3;
+        Hp = 3;
         Coins = 0;
     }
 
@@ -44,8 +47,21 @@ public class Player2D : MonoBehaviour
 
     public void TakeDamage()
     {
-        _hp--;
-        HealthUIController.Instance.UpdateHealth(_hp);
+        if (Hp > 0)
+        {
+            Hp--;
+            HealthUIController.Instance.UpdateHealth(Hp);
+            if (Hp <= 0)
+            {
+                Die();
+            }
+        }
+    }
+
+    private void Die()
+    {
+        _spriteRenderer.enabled = false;
+        _deathEffect.Play();
     }
 
     public void AddCoins(int amount)

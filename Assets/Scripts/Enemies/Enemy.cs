@@ -23,9 +23,16 @@ public class Enemy : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _direction = (Spawner.Instance.PlayerPosition.position - _centrePoint.position).normalized;
-        float distance = Vector3.Distance(Spawner.Instance.PlayerPosition.position, _centrePoint.position);
-        _rb.linearVelocity = _direction * _currentSpeed;
+        if (Player2D.Instance.Hp > 0)
+        {
+            _direction = (Spawner.Instance.PlayerPosition.position - _centrePoint.position).normalized;
+            float distance = Vector3.Distance(Spawner.Instance.PlayerPosition.position, _centrePoint.position);
+            _rb.linearVelocity = _direction * _currentSpeed;
+        }
+        else
+        {
+            _rb.linearVelocity = Vector2.zero;
+        }
     }
 
     private void OnDrawGizmos()
