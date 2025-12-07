@@ -128,7 +128,7 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
-        if (Random.value < _enemyData.BaseCoinDropChance && Spawner.Instance.Coins.Count < 3)
+        if (Random.value < _enemyData.BaseCoinDropChance && Spawner.Instance.Coins.Count < 3 && GameManager.Instance.CurrentArea != Area.Core)
         {
             Spawner.Instance.SpawnCoin(this);
         }

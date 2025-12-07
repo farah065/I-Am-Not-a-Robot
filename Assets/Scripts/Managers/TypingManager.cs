@@ -20,6 +20,14 @@ public class TypingManager : Singleton<TypingManager>
     private Trie _coinTrie => Spawner.Instance.CoinTrie;
     private Trie _inventoryTrie => InventoryManager.Instance.InventoryTrie;
 
+    public void Initialise()
+    {
+        Typed = "";
+        _accuracyMultiplier = 1f;
+        _currentTarget = null;
+        _currentCoinTarget = null;
+        _currentInventoryTarget = null;
+    }
 
     private void Update()
     {

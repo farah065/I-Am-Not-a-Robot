@@ -67,4 +67,12 @@ public class InventoryManager : Singleton<InventoryManager>
             }
         }
     }
+
+    public void ClearInventory()
+    {
+        foreach (var slot in InventorySlots)
+        {
+            slot.EmptySlot();
+        }
+    }
 }

@@ -17,4 +17,4 @@ MonoBehaviour:
   Type: 4
   Icon: {fileID: 21300000, guid: 3175f38512dc29e48981d6d292c849ee, type: 3}
   Description: Heals one heart of damage.
-  Cost: 0
+  Cost: 8

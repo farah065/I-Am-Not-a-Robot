@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHp: 10
   BaseSpeed: 0.5
-  BaseCoinDropChance: 1
+  BaseCoinDropChance: 0.3

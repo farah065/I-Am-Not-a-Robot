@@ -7,10 +7,10 @@ public class Spawner : Singleton<Spawner>
     public Trie EnemyTrie => _enemyTrie;
     public Trie CoinTrie => _coinTrie;
     public Transform PlayerPosition;
+    public int TotalEnemiesToSpawn = 5;
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _coinPrefab;
     [SerializeField] private float _spawnInterval = 2f;
-    [SerializeField] private int _totalEnemiesToSpawn = 20;
     [SerializeField] private Transform[] _spawnPoints;
     private List<string> _words;
     private List<string> _usedWords;
@@ -23,12 +23,17 @@ public class Spawner : Singleton<Spawner>
     private void Start()
     {
         FillWordsListFromFile();
+        Initialise();
+    }
+
+    public void Initialise()
+    {
         _usedWords = new List<string>();
 
         _enemyTrie = new Trie();
-        Enemies = new List<Enemy>();
-
         _coinTrie = new Trie();
+
+        Enemies = new List<Enemy>();
         Coins = new List<Coin>();
 
         StartWave();
@@ -36,7 +41,7 @@ public class Spawner : Singleton<Spawner>
 
     public void StartWave()
     {
-        _totalEnemiesToSpawn = 3;
+        TotalEnemiesToSpawn = 3;
         StartCoroutine(SpawnCoroutine());
     }
 
@@ -59,10 +64,10 @@ public class Spawner : Singleton<Spawner>
 
     private IEnumerator SpawnCoroutine()
     {
-        while (_totalEnemiesToSpawn > 0)
+        while (TotalEnemiesToSpawn > 0)
         {
             SpawnEnemy();
-            _totalEnemiesToSpawn--;
+            TotalEnemiesToSpawn--;
             yield return new WaitForSeconds(_spawnInterval);
         }
 

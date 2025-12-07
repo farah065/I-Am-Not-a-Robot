@@ -25,7 +25,7 @@ public class ShopManager : Singleton<ShopManager>
             do
             {
                 randomIndex = Random.Range(0, _availablePowerups.Length);
-            } while (_usedPowerupIndices.Contains(randomIndex));
+            } while (_usedPowerupIndices.Contains(randomIndex) && !IsPowerupInInventory(_availablePowerups[randomIndex]));
 
             _usedPowerupIndices.Add(randomIndex);
             CardControllers[i].SetPowerupData(_availablePowerups[randomIndex]);
@@ -34,6 +34,16 @@ public class ShopManager : Singleton<ShopManager>
         }
 
         ResetHighlight();
+    }
+
+    private bool IsPowerupInInventory(PowerupData powerupData)
+    {
+        foreach (var item in InventoryManager.Instance.InventorySlots)
+        {
+            if (!item.IsEmpty && item.PowerupData == powerupData)
+                return true;
+        }
+        return false;
     }
 
     public void DisableShop()

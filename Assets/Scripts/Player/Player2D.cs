@@ -18,8 +18,17 @@ public class Player2D : Singleton<Player2D>
 
     private void Start()
     {
+        Initialise();
+    }
+
+    public void Initialise()
+    {
         Hp = 3;
         Coins = 0;
+        HealthUIController.Instance.UpdateHealth(Hp);
+        CoinUIController.Instance.UpdateCoinCount(Coins);
+        ResetPowerupEffects();
+        _spriteRenderer.enabled = true;
     }
 
     private void Update()

@@ -19,17 +19,42 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameObject _waveEndUI;
     [SerializeField] private TMP_Text _waveEndText;
     [SerializeField] private Player2D _player;
+    [SerializeField] private EnemyData _enemyData;
+
+    public void WaveScaleUp()
+    {
+        if (_currentWave % 3 == 0)
+        {
+            _enemyData.MaxHp += 1f;
+            _enemyData.BaseSpeed += 0.05f;
+        }
+
+        // increase number of enemies to spawn
+        Spawner.Instance.TotalEnemiesToSpawn = Mathf.Min(30, Spawner.Instance.TotalEnemiesToSpawn + 1);
+    }
 
     private void Start()
+    {
+        InitialiseGame();
+    }
+
+    private void InitialiseGame()
     {
         _currentWave = 1;
 
         CurrentArea = Area.Forest;
+        Player2D.Instance.Initialise();
+        InventoryManager.Instance.ClearInventory();
+        TypingManager.Instance.Initialise();
 
         for (int i = 0; i < _areaTilemaps.Length; i++)
         {
             _areaTilemaps[i].SetActive(i == (int)CurrentArea);
         }
+
+        _enemyData.MaxHp = 10;
+        _enemyData.BaseSpeed = 0.5f;
+        _enemyData.BaseCoinDropChance = 0.3f;
     }
 
     private void IncrementWave()
@@ -52,6 +77,7 @@ public class GameManager : Singleton<GameManager>
         else
         {
             _currentWave++;
+            WaveScaleUp();
             Spawner.Instance.StartWave();
         }
     }

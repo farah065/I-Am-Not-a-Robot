@@ -17,4 +17,4 @@ MonoBehaviour:
   Type: 3
   Icon: {fileID: 21300000, guid: 9e978cd584f90b144859852ebc9a38d9, type: 3}
   Description: Freezes enemies for one second on hit. Lasts till the end of the wave.
-  Cost: 0
+  Cost: 5
