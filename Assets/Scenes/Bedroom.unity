@@ -1797,7 +1797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentWave: 1
   _currentArea: 0
-  _areaTransitionPoints: 01000000080000000c000000
+  _areaTransitionPoints: 04000000080000000c000000
   _areaTilemaps:
   - {fileID: 644741613}
   - {fileID: 1437603644}
@@ -2862,7 +2862,7 @@ MonoBehaviour:
   _enemyPrefab: {fileID: 7925208792664783286, guid: 48a29589b3cc3f949bb0bff39f28337d, type: 3}
   _coinPrefab: {fileID: 7925208792664783286, guid: 1f7c46241b21a4942830820d3e710e94, type: 3}
   _spawnInterval: 5
-  _totalEnemiesToSpawn: 2
+  _totalEnemiesToSpawn: 3
   _spawnPoints:
   - {fileID: 1518331939}
   - {fileID: 1160380109}

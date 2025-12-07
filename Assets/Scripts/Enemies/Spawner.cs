@@ -35,8 +35,7 @@ public class Spawner : Singleton<Spawner>
 
     public void StartWave()
     {
-        _totalEnemiesToSpawn = 2;
-        ClearAllCoins();
+        _totalEnemiesToSpawn = 3;
         StartCoroutine(SpawnCoroutine());
     }
 
@@ -70,6 +69,7 @@ public class Spawner : Singleton<Spawner>
         {
             yield return null;
         }
+        ClearAllCoins();
 
         yield return new WaitForSeconds(1f);
         StartCoroutine(GameManager.Instance.OnWaveEnd());

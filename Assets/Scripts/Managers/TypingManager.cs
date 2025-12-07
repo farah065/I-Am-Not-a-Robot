@@ -9,11 +9,14 @@ public class TypingManager : Singleton<TypingManager>
     [SerializeField] private Player2D _player;
     private Enemy _currentTarget = null;
     private Coin _currentCoinTarget = null;
+    private PowerupData _currentInventoryTarget = null;
     private float _accuracyMultiplier = 1f;
 
     private Trie _enemyTrie => Spawner.Instance.EnemyTrie;
     private Trie _shopTrie => ShopManager.Instance.Trie;
     private Trie _coinTrie => Spawner.Instance.CoinTrie;
+    private Trie _inventoryTrie => InventoryManager.Instance.InventoryTrie;
+
 
     private void Update()
     {
@@ -48,6 +51,7 @@ public class TypingManager : Singleton<TypingManager>
         {
             HandleInputForEnemies();
             HandleInputForCoins();
+            HandleInputForInventory();
         }
         else
         {
@@ -63,6 +67,7 @@ public class TypingManager : Singleton<TypingManager>
         {
             List<string> enemyMatches = _enemyTrie.Autocomplete(Typed);
             List<string> coinMatches = _coinTrie.Autocomplete(Typed);
+            List<string> inventoryMatches = InventoryManager.Instance.InventoryTrie.Autocomplete(Typed);
 
             // If exactly one enemy matches → lock target
             if (enemyMatches.Count == 1)
@@ -73,7 +78,7 @@ public class TypingManager : Singleton<TypingManager>
             }
 
             // If no matches at all → typo (handled here only if zero coins too)
-            if (enemyMatches.Count == 0 && coinMatches.Count == 0)
+            if (enemyMatches.Count == 0 && coinMatches.Count == 0 && inventoryMatches.Count == 0)
             {
                 Debug.Log("Wrong letter — matches no enemy or coin.");
                 _accuracyMultiplier = 1f;
@@ -125,9 +130,10 @@ public class TypingManager : Singleton<TypingManager>
 
         List<string> coinMatches = _coinTrie.Autocomplete(Typed);
         List<string> enemyMatches = _enemyTrie.Autocomplete(Typed);
+        List<string> inventoryMatches = InventoryManager.Instance.InventoryTrie.Autocomplete(Typed);
 
         // If no matches anywhere, this is a true typo
-        if (coinMatches.Count == 0 && enemyMatches.Count == 0)
+        if (coinMatches.Count == 0 && enemyMatches.Count == 0 && inventoryMatches.Count == 0)
         {
             Debug.Log("Wrong letter — no enemy/coin match.");
             _accuracyMultiplier = 1f;
@@ -175,6 +181,80 @@ public class TypingManager : Singleton<TypingManager>
             }
         }
     }
+
+    private void HandleInputForInventory()
+    {
+        // Do not use inventory items inside shop
+        if (ShopManager.Instance.IsShopOpen)
+            return;
+
+        // If an enemy or coin is being typed, powerups should not consume input
+        if (_currentTarget != null || _currentCoinTarget != null)
+            return;
+
+        List<string> inventoryMatches = InventoryManager.Instance.InventoryTrie.Autocomplete(Typed);
+        List<string> enemyMatches = _enemyTrie.Autocomplete(Typed);
+        List<string> coinMatches = _coinTrie.Autocomplete(Typed);
+
+        // If no inventory matches AND no enemy matches AND no coin matches → true typo
+        if (inventoryMatches.Count == 0 && enemyMatches.Count == 0 && coinMatches.Count == 0)
+        {
+            Debug.Log("Wrong letter — no enemy/coin/inventory match.");
+            _accuracyMultiplier = 1f;
+
+            Typed = Typed.Substring(0, Typed.Length - 1);
+            UpdateHighlights();
+            return;
+        }
+
+        // If multiple inventory matches → keep waiting
+        if (inventoryMatches.Count > 1)
+            return;
+
+        // If exactly 1 match in inventory
+        if (inventoryMatches.Count == 1)
+        {
+            string powerupName = inventoryMatches[0];
+
+            // Check direct instance
+            PowerupData powerup = InventoryManager.Instance.FindInventoryPowerup(powerupName);
+            if (powerup == null)
+                return;
+
+            int prefix = CountCorrectPrefix(Typed, powerup.TypableName);
+
+            // Good prefix
+            if (prefix == Typed.Length)
+            {
+                // FULL WORD: USE POWERUP
+                if (Typed.Length == powerup.TypableName.Length)
+                {
+                    Debug.Log("USED POWERUP: " + powerup.TypableName);
+
+                    // TODO: Apply powerup effect here
+                    InventoryManager.Instance.ApplyInventoryPowerup(powerup);
+
+                    // consume input
+                    Typed = "";
+                    _currentInventoryTarget = null;
+                    UpdateHighlights();
+                }
+                else
+                {
+                    _currentInventoryTarget = powerup;
+                }
+            }
+            else
+            {
+                // Mistyped letter inside a powerup word
+                Debug.Log("Wrong inventory letter!");
+                _accuracyMultiplier = 1f;
+                Typed = Typed.Substring(0, Typed.Length - 1);
+                UpdateHighlights();
+            }
+        }
+    }
+
 
 
     private void HandleInputForShop()
@@ -327,6 +407,25 @@ public class TypingManager : Singleton<TypingManager>
             else
             {
                 ShopManager.Instance.ResetHighlight();
+            }
+        }
+        else
+        {
+            foreach (var slot in InventoryManager.Instance.GetComponentsInChildren<InventorySlotController>())
+            {
+                if (slot.IsEmpty)
+                {
+                    slot.ResetHighlight();
+                    continue;
+                }
+
+                string word = slot.Name;
+                int prefix = CountCorrectPrefix(Typed, word);
+
+                if (prefix == Typed.Length)
+                    slot.HighlightPrefix(prefix);
+                else
+                    slot.ResetHighlight();
             }
         }
     }

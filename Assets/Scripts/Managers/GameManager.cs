@@ -68,6 +68,7 @@ public class GameManager : Singleton<GameManager>
         }
 
         yield return new WaitUntil(() => !_player.IsTransitioning);
+        yield return new WaitForSeconds(1f);
 
         _waveEndText.text = "The " + area.ToString();
         _waveEndUI.SetActive(true);
