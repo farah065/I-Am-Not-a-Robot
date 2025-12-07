@@ -1931,9 +1931,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03d529fd249c9049b18c9f0bdeaa59e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentArea: 0
   _currentWave: 1
-  _currentArea: 0
-  _areaTransitionPoints: 04000000080000000c000000
+  _areaTransitionPoints: 020000000400000006000000
   _areaTilemaps:
   - {fileID: 644741613}
   - {fileID: 1437603644}

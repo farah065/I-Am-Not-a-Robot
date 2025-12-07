@@ -18,6 +18,7 @@ public class Spawner : Singleton<Spawner>
     private Trie _coinTrie;
     public List<Enemy> Enemies;
     public List<Coin> Coins;
+    private static readonly char[] Symbols = { '-', '.', ',', '!', '?' };
 
     private void Start()
     {
@@ -123,15 +124,23 @@ public class Spawner : Singleton<Spawner>
         List<string> enemyWords = new List<string>();
         while (lettersNeeded > 0)
         {
-            string word = "";
+            string baseWord = "";
             do
             {
-                word = _words[Random.Range(0, _words.Count)];
-            } while (_usedWords.Contains(word));
+                baseWord = _words[Random.Range(0, _words.Count)];
+            }
+            while (_usedWords.Contains(baseWord));
 
-            enemyWords.Add(word);
-            _usedWords.Add(word);
-            lettersNeeded -= word.Length;
+            // Apply modifiers BEFORE storing
+            string finalWord = ApplyAreaModifiers(baseWord);
+
+            enemyWords.Add(finalWord);
+            _usedWords.Add(finalWord);
+
+            // Insert modified word into trie (NOT base word)
+            _enemyTrie.Insert(finalWord);
+
+            lettersNeeded -= finalWord.Length;
         }
 
         enemy.SetWords(enemyWords);
@@ -183,5 +192,93 @@ public class Spawner : Singleton<Spawner>
         {
             Debug.LogError("Words file not found.");
         }
+    }
+
+    public string ApplyAreaModifiers(string baseWord)
+    {
+        string result = baseWord;
+        Area area = GameManager.Instance.CurrentArea;
+
+        // Always: chance for NO modification at all
+        if (UnityEngine.Random.value < 0.50f)
+            return result; // 50% base chance to stay normal
+
+        switch (area)
+        {
+            case Area.Mountain:
+                return ApplyMountain(result);
+
+            case Area.Cave:
+                return ApplyCave(result);
+
+            case Area.Core:
+                return ApplyCore(result);
+
+            default:
+                return result;
+        }
+    }
+
+    private string ApplyMountain(string word)
+    {
+        // 40% chance first letter becomes capitalized
+        if (UnityEngine.Random.value < 0.40f)
+            return Capitalize(word);
+
+        return word; // unchanged
+    }
+
+    private string ApplyCave(string word)
+    {
+        float r = UnityEngine.Random.value;
+
+        if (r < 0.33f)
+        {
+            // 1/3 chance — Capitalize first letter
+            return Capitalize(word);
+        }
+        else if (r < 0.66f)
+        {
+            // 1/3 chance — Add symbol at end
+            return AddSymbol(word);
+        }
+
+        // 1/3 chance — stay normal
+        return word;
+    }
+
+    private string ApplyCore(string word)
+    {
+        float r = UnityEngine.Random.value;
+
+        if (r < 0.25f)
+        {
+            // 25% just capitalization
+            return Capitalize(word);
+        }
+        else if (r < 0.50f)
+        {
+            // 25% just symbol
+            return AddSymbol(word);
+        }
+        else if (r < 0.60f)
+        {
+            // 10% BOTH happen at once
+            return AddSymbol(Capitalize(word));
+        }
+
+        // 40% unchanged
+        return word;
+    }
+
+    private string Capitalize(string w)
+    {
+        if (string.IsNullOrEmpty(w)) return w;
+        return char.ToUpper(w[0]) + w.Substring(1);
+    }
+
+    private string AddSymbol(string w)
+    {
+        return w + Symbols[UnityEngine.Random.Range(0, Symbols.Length)];
     }
 }

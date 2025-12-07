@@ -39,15 +39,46 @@ public class TypingManager : Singleton<TypingManager>
 
     private char ConvertKey(KeyControl key)
     {
-        // convert letter keys to chars
-        if (key.name.Length == 1)
+        // Reject modifier keys
+        if (key.keyCode == Key.None) return '\0';
+
+        // Check if shift is held
+        bool shift = Keyboard.current.shiftKey.isPressed;
+
+        // Check if caps lock is enabled (using the LED state)
+        bool capsLock = Keyboard.current.capsLockKey.isPressed;
+
+        // Handle letters (A-Z keys)
+        if (key.keyCode >= Key.A && key.keyCode <= Key.Z)
         {
-            char c = key.name[0];
-            if (c >= 'a' && c <= 'z')
-                return c;
+            char baseLetter = (char)('a' + (key.keyCode - Key.A));
+
+            // Determine final casing: XOR → capital only when ONE is active
+            bool makeUpper = shift ^ capsLock;
+
+            return makeUpper ? char.ToUpper(baseLetter) : baseLetter;
         }
+
+        // Handle allowed symbols
+        // Period
+        if (key.keyCode == Key.Period) return '.';
+        // Comma
+        if (key.keyCode == Key.Comma) return ',';
+        // Minus/Hyphen
+        if (key.keyCode == Key.Minus) return '-';
+
+        // Shift-dependent symbols
+        if (shift)
+        {
+            // Exclamation mark (Shift + 1)
+            if (key.keyCode == Key.Digit1) return '!';
+            // Question mark (Shift + /)
+            if (key.keyCode == Key.Slash) return '?';
+        }
+
         return '\0';
     }
+
 
     private void HandleInput(char c)
     {

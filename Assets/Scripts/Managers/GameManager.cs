@@ -12,8 +12,8 @@ public enum Area
 
 public class GameManager : Singleton<GameManager>
 {
+    public Area CurrentArea;
     [SerializeField] private int _currentWave;
-    [SerializeField] private Area _currentArea;
     [SerializeField] private int[] _areaTransitionPoints;
     [SerializeField] private GameObject[] _areaTilemaps;
     [SerializeField] private GameObject _waveEndUI;
@@ -24,11 +24,11 @@ public class GameManager : Singleton<GameManager>
     {
         _currentWave = 1;
 
-        _currentArea = Area.Forest;
+        CurrentArea = Area.Forest;
 
         for (int i = 0; i < _areaTilemaps.Length; i++)
         {
-            _areaTilemaps[i].SetActive(i == (int)_currentArea);
+            _areaTilemaps[i].SetActive(i == (int)CurrentArea);
         }
     }
 
@@ -60,7 +60,7 @@ public class GameManager : Singleton<GameManager>
     {
         _player.PlaySceneTransitionAnimation();
         yield return new WaitUntil(() => _player.HasReachedExit);
-        _currentArea = area;
+        CurrentArea = area;
 
         for (int i = 0; i < _areaTilemaps.Length; i++)
         {
@@ -95,7 +95,7 @@ public class GameManager : Singleton<GameManager>
         _waveEndUI.SetActive(false);
 
         // show shop
-        if (!InventoryManager.Instance.IsInventoryFull() && _currentArea != Area.Core)
+        if (!InventoryManager.Instance.IsInventoryFull() && CurrentArea != Area.Core)
         {
             ShopManager.Instance.EnableShop();
         }
