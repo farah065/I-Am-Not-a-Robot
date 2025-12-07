@@ -3,14 +3,35 @@ using UnityEngine;
 public class Player2D : MonoBehaviour
 {
     public int Coins;
+    public bool IsTransitioning = false;
+    public bool HasReachedExit = false;
     [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _centrePoint;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private Rigidbody2D _rb;
     private int _hp;
+    private bool _canStop = false;
 
     private void Start()
     {
         _hp = 3;
         Coins = 0;
+    }
+
+    private void Update()
+    {
+        if (IsTransitioning)
+        {
+            _rb.linearVelocity = new Vector2(0, 2f);
+            if (transform.localPosition.y >= 0 && _canStop)
+            {
+                IsTransitioning = false;
+                HasReachedExit = false;
+                _canStop = false;
+                _animator.SetBool("IsWalkingUp", false);
+                _rb.linearVelocity = Vector2.zero;
+            }
+        }
     }
 
     public void FireBullet(Vector3 targetPosition, int damage, float _multiplier, Enemy target)
@@ -31,5 +52,24 @@ public class Player2D : MonoBehaviour
     {
         Coins += amount;
         CoinUIController.Instance.UpdateCoinCount(Coins);
+    }
+
+    public void PlaySceneTransitionAnimation()
+    {
+        IsTransitioning = true;
+        _animator.SetBool("IsWalkingUp", true);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Exit"))
+        {
+            transform.localPosition = new Vector3(0, -6.6f, 0);
+            HasReachedExit = true;
+        }
+        else if (collision.CompareTag("Stop"))
+        {
+            _canStop = true;
+        }
     }
 }

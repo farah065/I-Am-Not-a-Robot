@@ -18,40 +18,65 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private GameObject[] _areaTilemaps;
     [SerializeField] private GameObject _waveEndUI;
     [SerializeField] private TMP_Text _waveEndText;
+    [SerializeField] private Player2D _player;
 
     private void Start()
     {
         _currentWave = 1;
-        MoveToArea(Area.Forest);
+
+        _currentArea = Area.Forest;
+
+        for (int i = 0; i < _areaTilemaps.Length; i++)
+        {
+            _areaTilemaps[i].SetActive(i == (int)_currentArea);
+        }
     }
 
     private void IncrementWave()
     {
         if (_currentWave == _areaTransitionPoints[0])
         {
-            MoveToArea(Area.Mountain);
+            _currentWave++;
+            StartCoroutine(MoveToArea(Area.Mountain));
         }
         else if (_currentWave == _areaTransitionPoints[1])
         {
-            MoveToArea(Area.Cave);
+            _currentWave++;
+            StartCoroutine(MoveToArea(Area.Cave));
         }
         else if (_currentWave == _areaTransitionPoints[2])
         {
-            MoveToArea(Area.Core);
+            _currentWave++;
+            StartCoroutine(MoveToArea(Area.Core));
         }
-
-        _currentWave++;
+        else
+        {
+            _currentWave++;
+            Spawner.Instance.StartWave();
+        }
     }
 
-    private void MoveToArea(Area area)
+    private IEnumerator MoveToArea(Area area)
     {
-        Debug.Log("Moving to area: " + area.ToString());
+        _player.PlaySceneTransitionAnimation();
+        yield return new WaitUntil(() => _player.HasReachedExit);
         _currentArea = area;
 
         for (int i = 0; i < _areaTilemaps.Length; i++)
         {
             _areaTilemaps[i].SetActive(i == (int)area);
         }
+
+        yield return new WaitUntil(() => !_player.IsTransitioning);
+
+        _waveEndText.text = "The " + area.ToString();
+        _waveEndUI.SetActive(true);
+
+        yield return new WaitForSeconds(3f);
+
+        _waveEndUI.SetActive(false);
+
+        Spawner.Instance.StartWave();
     }
 
     public IEnumerator OnWaveEnd()
@@ -81,6 +106,5 @@ public class GameManager : Singleton<GameManager>
     {
         yield return new WaitForSeconds(1f);
         IncrementWave();
-        Spawner.Instance.StartWave();
     }
 }
