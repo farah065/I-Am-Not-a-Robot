@@ -87,7 +87,6 @@ public class TypingManager : Singleton<TypingManager>
         return '\0';
     }
 
-
     private void HandleInput(char c)
     {
         // Append character to typed string
@@ -245,9 +244,8 @@ public class TypingManager : Singleton<TypingManager>
         // --- CASE 2: player typed something invalid (no card matches this prefix) ---
         if (matches.Count == 0)
         {
-            if (!(normalizedTyped.StartsWith("s") || normalizedTyped.StartsWith("sk") || normalizedTyped.StartsWith("ski") || normalizedTyped.StartsWith("skip")))
+            if (!"skip".StartsWith(normalizedTyped))
             {
-                // Remove the last letter typed
                 Typed = Typed.Substring(0, Typed.Length - 1);
             }
 
@@ -262,7 +260,7 @@ public class TypingManager : Singleton<TypingManager>
     private void HandleInputForShopSkip()
     {
         // if player typed "skip" fully, close shop
-        if (Typed == "skip")
+        if (Typed.ToLower() == "skip")
         {
             ShopManager.Instance.DisableShop();
 

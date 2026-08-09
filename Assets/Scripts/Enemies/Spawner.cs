@@ -12,6 +12,8 @@ public class Spawner : Singleton<Spawner>
     [SerializeField] private GameObject _coinPrefab;
     [SerializeField] private float _spawnInterval = 2f;
     [SerializeField] private Transform[] _spawnPoints;
+    [SerializeField] private Transform _enemyParent;
+    [SerializeField] private Transform _coinParent;
     [SerializeField] private EnemyData _enemyData;
     private List<string> _words;
     private List<string> _usedWords;
@@ -31,11 +33,22 @@ public class Spawner : Singleton<Spawner>
         FillWordsListFromFile();
         _usedWords = new List<string>();
 
+        Debug.Log("<color=green>INITIALISING ENEMY TRIE</color>");
         _enemyTrie = new Trie();
         _coinTrie = new Trie();
 
         Enemies = new List<Enemy>();
         Coins = new List<Coin>();
+
+        foreach (Transform child in _enemyParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Transform child in _coinParent)
+        {
+            Destroy(child.gameObject);
+        }
 
         StartWave();
     }
@@ -61,6 +74,7 @@ public class Spawner : Singleton<Spawner>
     public void RemoveEnemy(Enemy enemy)
     {
         Enemies.Remove(enemy);
+        RemoveWordFromTrie(enemy.CurrentWord);
     }
 
     private IEnumerator SpawnCoroutine()
@@ -101,6 +115,7 @@ public class Spawner : Singleton<Spawner>
     {
         Vector3 spawnPosition = _spawnPoints[Random.Range(0, _spawnPoints.Length)].position;
         GameObject enemyObject = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
+        enemyObject.transform.SetParent(_enemyParent);
         Enemy enemy = enemyObject.GetComponent<Enemy>();
         AssignWordsToEnemy(enemy);
         Enemies.Add(enemy);
@@ -110,6 +125,7 @@ public class Spawner : Singleton<Spawner>
     {
         Vector3 spawnPosition = enemy.transform.position;
         GameObject coinObject = Instantiate(_coinPrefab, spawnPosition, Quaternion.identity);
+        coinObject.transform.SetParent(_coinParent);
         Coin coin = coinObject.GetComponent<Coin>();
 
         // get random unused word
@@ -131,7 +147,7 @@ public class Spawner : Singleton<Spawner>
         List<string> enemyWords = new List<string>();
         while (lettersNeeded > 0)
         {
-            string baseWord = "";
+            string baseWord;
             do
             {
                 baseWord = _words[Random.Range(0, _words.Count)];
@@ -142,9 +158,9 @@ public class Spawner : Singleton<Spawner>
             string finalWord = ApplyAreaModifiers(baseWord);
 
             enemyWords.Add(finalWord);
-            _usedWords.Add(finalWord);
+            _usedWords.Add(baseWord);
 
-            lettersNeeded -= baseWord.Length;
+            lettersNeeded -= finalWord.Length;
         }
 
         enemy.SetWords(enemyWords);
@@ -204,7 +220,7 @@ public class Spawner : Singleton<Spawner>
         Area area = GameManager.Instance.CurrentArea;
 
         // Always: chance for NO modification at all
-        if (UnityEngine.Random.value < 0.50f)
+        if (Random.value < 0.50f)
             return result; // 50% base chance to stay normal
 
         switch (area)
@@ -226,7 +242,7 @@ public class Spawner : Singleton<Spawner>
     private string ApplyMountain(string word)
     {
         // 40% chance first letter becomes capitalized
-        if (UnityEngine.Random.value < 0.40f)
+        if (Random.value < 0.40f)
             return Capitalize(word);
 
         return word; // unchanged
@@ -234,7 +250,7 @@ public class Spawner : Singleton<Spawner>
 
     private string ApplyCave(string word)
     {
-        float r = UnityEngine.Random.value;
+        float r = Random.value;
 
         if (r < 0.33f)
         {
@@ -253,7 +269,7 @@ public class Spawner : Singleton<Spawner>
 
     private string ApplyCore(string word)
     {
-        float r = UnityEngine.Random.value;
+        float r = Random.value;
 
         if (r < 0.25f)
         {
@@ -283,6 +299,6 @@ public class Spawner : Singleton<Spawner>
 
     private string AddSymbol(string w)
     {
-        return w + Symbols[UnityEngine.Random.Range(0, Symbols.Length)];
+        return w + Symbols[Random.Range(0, Symbols.Length)];
     }
 }

@@ -52,7 +52,7 @@ public class GameManager : Singleton<GameManager>
         Spawner.Instance.TotalEnemiesToSpawn = Mathf.Min(30, Spawner.Instance.TotalEnemiesToSpawn + 1);
     }
 
-    private void Start()
+    private void OnEnable()
     {
         // Begin the game setup process
         InitialiseGame();
@@ -61,6 +61,7 @@ public class GameManager : Singleton<GameManager>
     // Resets game state, enemies, UI, player, and area tiles
     public void InitialiseGame()
     {
+        Debug.Log("INITIALISING GAME");
         _currentWave = 1;
 
         // Start in the Forest area

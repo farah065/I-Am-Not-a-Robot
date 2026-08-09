@@ -45,7 +45,6 @@ public class BrowserController : Singleton<BrowserController>
     {
         _game.SetActive(true);
         _captcha.SetActive(false);
-        GameManager.Instance.InitialiseGame();
     }
 
     public void HideGame()

@@ -26,12 +26,13 @@ public class Trie
             node = node.Children[c];
         }
         //Marks the last node as the end of the word 
-        node.isEndOfTheWord = true;
+        node.IsEndOfTheWord = true;
     }
 
     // Deletion
     public bool Delete(string word)
     {
+        Debug.Log("<color=red>Deleting word: " + word + "</color>");
         return DeleteHelper(root, word, 0);
     }
 
@@ -40,8 +41,8 @@ public class Trie
         if (index == word.Length)
         {
             //If the end of the word is reached, it unmarks the end-of-word flag.
-            if (!node.isEndOfTheWord) return false; // Word not found
-            node.isEndOfTheWord = false;
+            if (!node.IsEndOfTheWord) return false; // Word not found
+            node.IsEndOfTheWord = false;
             //If the node has no children, it can be deleted.
             return node.Children.Count == 0;
         }
@@ -59,7 +60,7 @@ public class Trie
             //If the child node can be deleted, it removes it from the current node's children.
             node.Children.Remove(c);
             //Returns true if the current node can also be deleted.
-            return node.Children.Count == 0 && !node.isEndOfTheWord;
+            return node.Children.Count == 0 && !node.IsEndOfTheWord;
         }
 
         return false;
@@ -90,11 +91,10 @@ public class Trie
     {
         //If the node is null, it returns.
         if (node == null) return;
-        if (node.isEndOfTheWord)
+        if (node.IsEndOfTheWord)
         {
             //If the node marks the end of a word, it adds the word (prefix) to the results.
             results.Add(prefix);
-            Debug.Log("Found word: " + prefix);
         }
 
         foreach (var child in node.Children)
@@ -124,12 +124,8 @@ public class Trie
     // Printing
     public void PrintAllWords()
     {
-        Debug.Log("PRINTING WORDS");
         List<string> results = new List<string>();
         CollectWords(root, "", results);
-        foreach (string word in results)
-        {
-            Debug.Log(word);
-        }
+        Debug.Log("PRINTING WORDS: "+ string.Join(", ", results));
     }
 }
