@@ -55,7 +55,6 @@ public class Spawner : Singleton<Spawner>
 
     public void StartWave()
     {
-        TotalEnemiesToSpawn = 3;
         StartCoroutine(SpawnCoroutine());
     }
 
@@ -79,10 +78,11 @@ public class Spawner : Singleton<Spawner>
 
     private IEnumerator SpawnCoroutine()
     {
-        while (TotalEnemiesToSpawn > 0)
+        int enemiesToSpawn = TotalEnemiesToSpawn;
+        while (enemiesToSpawn > 0)
         {
             SpawnEnemy();
-            TotalEnemiesToSpawn--;
+            enemiesToSpawn--;
             yield return new WaitForSeconds(_spawnInterval);
         }
 

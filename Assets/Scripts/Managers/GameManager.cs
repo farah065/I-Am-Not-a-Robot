@@ -44,8 +44,8 @@ public class GameManager : Singleton<GameManager>
         // Every 3 waves, scale up enemy HP and speed
         if (_currentWave % 3 == 0)
         {
-            _enemyData.MaxHp += 1f;
-            _enemyData.BaseSpeed += 0.05f;
+            _enemyData.MaxHp = Mathf.Min(24, _enemyData.MaxHp + 2);
+            _enemyData.BaseSpeed += 0.1f;
         }
 
         // Increment max enemies per wave, capped at 30
