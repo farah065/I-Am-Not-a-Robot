@@ -1358,6 +1358,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 208
       objectReference: {fileID: 0}
+    - target: {fileID: 756834466636480876, guid: ab0caac27c54e3b47b2bfb8df4834490, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 35.820312
+      objectReference: {fileID: 0}
     - target: {fileID: 4393143022695516702, guid: ab0caac27c54e3b47b2bfb8df4834490, type: 3}
       propertyPath: m_text
       value: Settings
@@ -2721,8 +2725,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000000032439502, y: 0.99724245, z: -0.07421293, w: -0.000000043590852}
-  m_LocalPosition: {x: 20.349998, y: 5.9, z: 6.9199996}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.669118, y: 6.5, z: 12.413488}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4030,6 +4034,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1758460097}
     m_Modifications:
+    - target: {fileID: 756834466636480876, guid: ab0caac27c54e3b47b2bfb8df4834490, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 35.820312
+      objectReference: {fileID: 0}
     - target: {fileID: 4553603358239983716, guid: ab0caac27c54e3b47b2bfb8df4834490, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -4569,7 +4577,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &574417443
 Transform:
   m_ObjectHideFlags: 0
@@ -4765,7 +4773,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &615091817
 Transform:
   m_ObjectHideFlags: 0
@@ -14893,7 +14901,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b46489fd5e4937a468ff838795e47711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsTestMode: 1
+  IsTestMode: 0
   ShowGame: 0
   _testCamera: {fileID: 2072864281}
   _screen: {fileID: 1227602256}
@@ -27068,6 +27076,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 37749f01897f11846b9b3b7a21978205, type: 3}
+    - target: {fileID: 756834466636480876, guid: ab0caac27c54e3b47b2bfb8df4834490, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 35.820312
+      objectReference: {fileID: 0}
+    - target: {fileID: 4160725434192181510, guid: ab0caac27c54e3b47b2bfb8df4834490, type: 3}
+      propertyPath: m_Delegates.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4160725434192181510, guid: ab0caac27c54e3b47b2bfb8df4834490, type: 3}
+      propertyPath: m_Delegates.Array.data[1].callback.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4393143022695516702, guid: ab0caac27c54e3b47b2bfb8df4834490, type: 3}
       propertyPath: m_text
       value: Trash
@@ -27199,7 +27219,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 3770, y: 2320}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &1183568430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27207,7 +27227,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1183568428}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
@@ -27502,7 +27522,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 330585545}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -52857,7 +52877,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 1885, y: 1160}
   m_SizeDelta: {x: 81.88073, y: 22.93578}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2072864279
@@ -52886,7 +52906,7 @@ Transform:
   m_GameObject: {fileID: 2072864279}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0000000032439502, y: 0.99724245, z: -0.07421293, w: -0.000000043590852}
-  m_LocalPosition: {x: 20.349998, y: 5.9, z: 6.9199996}
+  m_LocalPosition: {x: 20.349998, y: 5.93, z: 7.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
