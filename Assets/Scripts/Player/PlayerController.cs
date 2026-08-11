@@ -111,8 +111,8 @@ public class PlayerController : MonoBehaviour
 
             if (desiredMove.sqrMagnitude > 0f)
             {
-                Quaternion lookRot = Quaternion.LookRotation(desiredMove);
-                _rb.MoveRotation(Quaternion.Slerp(_rb.rotation, lookRot, Time.fixedDeltaTime * 10f));
+                // set the player's rotation to the same as the camera's rotation on the y-axis
+                _rb.rotation = Quaternion.Euler(0f, _cineCam.transform.eulerAngles.y, 0f);
             }
         }
         else if (_moveInput.sqrMagnitude > 0.01f)
@@ -131,8 +131,6 @@ public class PlayerController : MonoBehaviour
 
             Vector3 boxCenter = transform.position + camForward * _forwardOffset + Vector3.up * _verticalOffset;
             Vector3 boxHalfExtents = new Vector3(_xSize / 2, _ySize / 2, _zSize / 2);
-
-            Debug.Log("INTERACT");
 
             // Get all colliders overlapping this oriented box
             Collider[] hits = Physics.OverlapBox(boxCenter, boxHalfExtents, Quaternion.LookRotation(camForward));
@@ -159,6 +157,24 @@ public class PlayerController : MonoBehaviour
         else if (_monitorController.IsMonitorOn == false)
         {
             _monitorController.Interact();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        IInteractable interactable = other.GetComponentInParent<IInteractable>();
+        if (interactable != null)
+        {
+            interactable.ShowInteractionTrigger();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        IInteractable interactable = other.GetComponentInParent<IInteractable>();
+        if (interactable != null)
+        {
+            interactable.HideInteractionTrigger();
         }
     }
 }

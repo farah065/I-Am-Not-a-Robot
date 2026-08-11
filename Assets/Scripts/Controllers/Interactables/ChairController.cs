@@ -9,6 +9,8 @@ public class ChairController : MonoBehaviour, IInteractable
     public bool IsPlayerSitting = false;
     [SerializeField] private GameObject _menuCanvas;
     [SerializeField] private CinemachineCamera _deskCamera;
+    [SerializeField] private GameObject _interactionTrigger;
+    [SerializeField] private MonitorController _monitorController;
     private bool _isMenuOpen = false;
 
     public void Interact()
@@ -26,6 +28,19 @@ public class ChairController : MonoBehaviour, IInteractable
         }
     }
 
+    public void ShowInteractionTrigger()
+    {
+        if (!_isMenuOpen)
+        {
+            _interactionTrigger.SetActive(true);
+        }
+    }
+
+    public void HideInteractionTrigger()
+    {
+        _interactionTrigger.SetActive(false);
+    }
+
     public void SitDown()
     {
         CloseMenu();
@@ -35,10 +50,14 @@ public class ChairController : MonoBehaviour, IInteractable
         sitSequence.Append(_deskCamera.transform.DOMove(_deskCamera.transform.position + new Vector3(0, -1f, 0), 0.5f))
             .PrependInterval(0.75f);
         sitSequence.Play();
+
+        _monitorController.ShowInteractionTrigger();
     }
 
     public void StandUp()
     {
+        _monitorController.HideInteractionTrigger();
+
         IsPlayerSitting = false;
         _deskCamera.Priority = 0;
         Cursor.visible = false;
@@ -71,6 +90,8 @@ public class ChairController : MonoBehaviour, IInteractable
     {
         _menuCanvas.SetActive(true);
         _isMenuOpen = true;
+
+        HideInteractionTrigger();
     }
 
     private void CloseMenu()

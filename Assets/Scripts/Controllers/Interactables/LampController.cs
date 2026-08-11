@@ -5,6 +5,7 @@ public class LampController : MonoBehaviour, IInteractable
     [SerializeField] private Light _pointLight;
     [SerializeField] private Light _ceilingSpotlight;
     [SerializeField] private Light _floorSpotlight;
+    [SerializeField] private GameObject _interactionTrigger;
 
     private bool _isOn = false;
 
@@ -39,5 +40,15 @@ public class LampController : MonoBehaviour, IInteractable
             SwitchOnLights();
             _isOn = true;
         }
+    }
+
+    public void ShowInteractionTrigger()
+    {
+        _interactionTrigger.SetActive(true);
+    }
+
+    public void HideInteractionTrigger()
+    {
+        _interactionTrigger.SetActive(false);
     }
 }

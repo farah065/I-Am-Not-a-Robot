@@ -15,8 +15,11 @@ public class TestMode : MonoBehaviour
         _screen.SetActive(IsTestMode);
         _playerController.SetTestMode(IsTestMode);
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        if (IsTestMode)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
 
         if (ShowGame)
         {

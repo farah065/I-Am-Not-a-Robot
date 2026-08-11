@@ -7,6 +7,7 @@ public class MonitorController : MonoBehaviour, IInteractable
     public bool IsMonitorOn = false;
     [SerializeField] private GameObject _monitorScreen;
     [SerializeField] private CinemachineCamera _deskCamera;
+    [SerializeField] private GameObject _interactionTrigger;
 
     public void Interact()
     {
@@ -20,8 +21,20 @@ public class MonitorController : MonoBehaviour, IInteractable
         }
     }
 
+    public void ShowInteractionTrigger()
+    {
+        _interactionTrigger.SetActive(true);
+    }
+
+    public void HideInteractionTrigger()
+    {
+        _interactionTrigger.SetActive(false);
+    }
+
     private void SwitchOnMonitor()
     {
+        HideInteractionTrigger();
+
         _monitorScreen.SetActive(true);
         IsMonitorOn = true;
         _deskCamera.transform.DOLocalMove(_deskCamera.transform.localPosition + new Vector3(0, 0.4f, -2.23f), 0.5f);
