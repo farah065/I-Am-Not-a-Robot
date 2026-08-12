@@ -1,3 +1,5 @@
+using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class DesktopController : Singleton<DesktopController>
@@ -5,6 +7,26 @@ public class DesktopController : Singleton<DesktopController>
     [SerializeField] private GameObject _window;
     [SerializeField] private GameObject _emailAppUI;
     [SerializeField] private GameObject _browserUI;
+    [SerializeField] private TextMeshProUGUI _dateTimeText;
+
+    private void OnEnable()
+    {
+        StartCoroutine(UpdateDateTime());
+    }
+
+    private void OnDisable()
+    {
+        StopCoroutine(UpdateDateTime());
+    }
+
+    private IEnumerator UpdateDateTime()
+    {
+        while (true)
+        {
+            _dateTimeText.text = System.DateTime.Now.AddYears(20).ToString("hh:mm tt\ndd/MM/yyyy");
+            yield return new WaitForSeconds(1f);
+        }
+    }
 
     public void CloseWindow()
     {
