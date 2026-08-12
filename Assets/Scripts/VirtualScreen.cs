@@ -3,11 +3,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+public enum ScreenCaster
+{
+    Settings,
+    Desktop
+}
+
 public class VirtualScreen : GraphicRaycaster
 {
     public Camera screenCamera; // Reference to the camera responsible for rendering the virtual screen's rendertexture
 
-    public GraphicRaycaster screenCaster; // Reference to the GraphicRaycaster of the canvas displayed on the virtual screen
+    private GraphicRaycaster screenCaster; // Reference to the GraphicRaycaster of the canvas displayed on the virtual screen
+
+    [SerializeField] private GraphicRaycaster _settingsGraphicRaycaster;
+    [SerializeField] private GraphicRaycaster _desktopGraphicRaycaster;
+
+    protected override void Start()
+    {
+        base.Start();
+        SetScreenCaster(ScreenCaster.Desktop); // Default to desktop raycaster
+    }
 
     // Called by Unity when a Raycaster should raycast because it extends BaseRaycaster.
     public override void Raycast(PointerEventData eventData, List<RaycastResult> resultAppendList)
@@ -27,6 +42,18 @@ public class VirtualScreen : GraphicRaycaster
 
                 screenCaster.Raycast(eventData, resultAppendList);
             }
+        }
+    }
+
+    public void SetScreenCaster(ScreenCaster casterType)
+    {
+        if (casterType == ScreenCaster.Settings)
+        {
+            screenCaster = _settingsGraphicRaycaster;
+        }
+        else
+        {
+            screenCaster = _desktopGraphicRaycaster;
         }
     }
 }

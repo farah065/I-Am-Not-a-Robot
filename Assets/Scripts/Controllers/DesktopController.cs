@@ -50,6 +50,7 @@ public class DesktopController : Singleton<DesktopController>
 
     public void OpenBrowser()
     {
+        BrowserController.Instance.OpenSearchPage();
         _window.SetActive(true);
         _browserUI.SetActive(true);
         _emailAppUI.SetActive(false);

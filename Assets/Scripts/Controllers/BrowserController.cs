@@ -8,8 +8,10 @@ public class BrowserController : Singleton<BrowserController>
     [SerializeField] private GameObject _login;
     [SerializeField] private GameObject _captcha;
 
+    [SerializeField] private TMP_InputField _searchInput;
     [SerializeField] private TMP_InputField _email;
     [SerializeField] private TMP_InputField _password;
+    [SerializeField] private TMP_InputField _captchaInput;
 
     [SerializeField] private GameObject _game;
 
@@ -17,6 +19,8 @@ public class BrowserController : Singleton<BrowserController>
     {
         _searchPage.SetActive(true);
         _valdivian.SetActive(false);
+
+        _searchInput.text = "";
     }
     
     public void TryOpenValdivianPage(string query)
@@ -39,6 +43,8 @@ public class BrowserController : Singleton<BrowserController>
     {
         _login.SetActive(false);
         _captcha.SetActive(true);
+
+        _captchaInput.text = "";
     }
 
     public void ShowGame()
@@ -59,10 +65,8 @@ public class BrowserController : Singleton<BrowserController>
         _valdivian.SetActive(true);
         _login.SetActive(true);
         _captcha.SetActive(false);
-    }
 
-    private void OnEnable()
-    {
-        OpenSearchPage();
+        _email.text = "";
+        _password.text = "";
     }
 }
