@@ -49,6 +49,8 @@ public class InventoryManager : Singleton<InventoryManager>
 
     public void UsePowerup(PowerupData powerup)
     {
+        MusicController.Instance.PlayPowerupSfx();
+
         if (powerup.Type == PowerupType.Bandage)
         {
             Player2D.Instance.Heal();

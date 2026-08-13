@@ -186,6 +186,7 @@ public class TypingManager : Singleton<TypingManager>
                 else if (_currentCoinTarget != null)
                 {
                     Spawner.Instance.CollectCoin(_currentCoinTarget);
+                    MusicController.Instance.PlayCoinSfx();
                     _player.AddCoins(1);
                 }
                 else if (_currentInventoryTarget != null)

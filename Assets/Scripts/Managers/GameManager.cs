@@ -117,6 +117,11 @@ public class GameManager : Singleton<GameManager>
         _waveEndText.text = "Wave " + _currentWave + " Complete!";
         _waveEndUI.SetActive(true);
 
+        if (!InventoryManager.Instance.IsInventoryFull() && CurrentArea != Area.Core)
+        {
+            MusicController.Instance.FadeInShopMusic();
+        }
+
         yield return new WaitForSeconds(3f);
 
         _waveEndUI.SetActive(false);
@@ -133,6 +138,7 @@ public class GameManager : Singleton<GameManager>
 
     public IEnumerator OnShopClosed()
     {
+        MusicController.Instance.FadeInBattleMusic();
         yield return new WaitForSeconds(1f);
         IncrementWave();
     }
