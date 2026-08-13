@@ -15874,8 +15874,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b46489fd5e4937a468ff838795e47711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsTestMode: 1
-  ShowGame: 1
+  IsTestMode: 0
+  ShowGame: 0
   _testCamera: {fileID: 2072864281}
   _screen: {fileID: 1227602256}
   _playerController: {fileID: 931160264}
