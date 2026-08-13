@@ -31,6 +31,8 @@ public class TypingManager : Singleton<TypingManager>
 
     private void Update()
     {
+        if (Time.timeScale == 0) return;
+
         // check every key on the keyboard
         foreach (var key in Keyboard.current.allKeys)
         {
@@ -395,6 +397,16 @@ public class TypingManager : Singleton<TypingManager>
         else
         {
             SetAccuracyMultiplier(1f);
+        }
+    }
+
+    public void ResetTypedIfMatch(string word)
+    {
+        if (_currentTarget != null && _currentTarget.CurrentWord == word && _currentCoinTarget == null && _currentInventoryTarget == null)
+        {
+            Typed = "";
+            UpdateHighlights();
+            _currentTarget = null;
         }
     }
 }

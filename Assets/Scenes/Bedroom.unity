@@ -2951,8 +2951,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0000000032439502, y: 0.99724245, z: -0.07421293, w: -0.000000043590852}
-  m_LocalPosition: {x: 20.349998, y: 5.93, z: 7.1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 13.669118, y: 6.5, z: 12.413488}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3059,15 +3059,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330587507}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 93.31, y: 7.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2133959659}
   - {fileID: 1758474098}
   - {fileID: 1580090593}
-  m_Father: {fileID: 652704280}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &330587509
 MonoBehaviour:
@@ -3093,6 +3093,8 @@ MonoBehaviour:
   _coinSfx: {fileID: 8300000, guid: 1d114768d3a4c2a4bb47a674a3e1498f, type: 3}
   _powerupSfx: {fileID: 8300000, guid: f973dfe7d7c8c4340878e585e1f7fa0f, type: 3}
   _gameOverSfx: {fileID: 8300000, guid: fd7d4a58d097a494ea4b02983d5093ed, type: 3}
+  _lightSwitchOnSfx: {fileID: 8300000, guid: 32dd16b108711ce4cb530301a7a35bd3, type: 3}
+  _lightSwitchOffSfx: {fileID: 8300000, guid: 97e4f9edefc195c4fab947da7508b99f, type: 3}
 --- !u!1 &331387260
 GameObject:
   m_ObjectHideFlags: 0
@@ -3275,10 +3277,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerPosition: {fileID: 674406994}
-  TotalEnemiesToSpawn: 4
+  TotalEnemiesToSpawn: 3
+  SpawnInterval: 3
   _enemyPrefab: {fileID: 7925208792664783286, guid: 48a29589b3cc3f949bb0bff39f28337d, type: 3}
   _coinPrefab: {fileID: 7925208792664783286, guid: 1f7c46241b21a4942830820d3e710e94, type: 3}
-  _spawnInterval: 5
   _spawnPoints:
   - {fileID: 1518331939}
   - {fileID: 1160380109}
@@ -5274,7 +5276,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &574417443
 Transform:
   m_ObjectHideFlags: 0
@@ -5607,7 +5609,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &615091817
 Transform:
   m_ObjectHideFlags: 0
@@ -15356,7 +15358,6 @@ Transform:
   - {fileID: 1521878464}
   - {fileID: 764627606}
   - {fileID: 1065721528}
-  - {fileID: 330587508}
   m_Father: {fileID: 1854850371}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &674406994 stripped
@@ -60750,5 +60751,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 1854850371}
   - {fileID: 1802978980}
+  - {fileID: 330587508}
   - {fileID: 363668196}
   - {fileID: 712582691}

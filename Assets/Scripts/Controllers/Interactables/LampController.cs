@@ -32,11 +32,13 @@ public class LampController : MonoBehaviour, IInteractable
     {
         if (_isOn)
         {
+            MusicController.Instance.PlayLightSwitchOffSfx();
             SwitchOffLights();
             _isOn = false;
         }
         else
         {
+            MusicController.Instance.PlayLightSwitchOnSfx();
             SwitchOnLights();
             _isOn = true;
         }

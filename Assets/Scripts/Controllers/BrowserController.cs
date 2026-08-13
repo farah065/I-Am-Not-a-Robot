@@ -49,12 +49,14 @@ public class BrowserController : Singleton<BrowserController>
 
     public void ShowGame()
     {
+        MusicController.Instance.StartGameMusic();
         _game.SetActive(true);
         _captcha.SetActive(false);
     }
 
     public void HideGame()
     {
+        MusicController.Instance.StopGameMusic();
         _captcha.SetActive(true);
         _game.SetActive(false);
     }

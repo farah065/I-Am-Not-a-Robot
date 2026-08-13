@@ -21,10 +21,18 @@ public class MusicController : Singleton<MusicController>
     [SerializeField] private AudioClip _coinSfx;
     [SerializeField] private AudioClip _powerupSfx;
     [SerializeField] private AudioClip _gameOverSfx;
+    [SerializeField] private AudioClip _lightSwitchOnSfx;
+    [SerializeField] private AudioClip _lightSwitchOffSfx;
 
-    private void OnEnable()
+    public void StartGameMusic()
     {
         StartCoroutine(PlayBattleMusic());
+    }
+
+    public void StopGameMusic()
+    {
+        _battleMusicSource.Stop();
+        _shopMusicSource.Stop();
     }
 
     private IEnumerator PlayBattleMusic()
@@ -95,5 +103,15 @@ public class MusicController : Singleton<MusicController>
     public void PlayPowerupSfx()
     {
         _sfxSource.PlayOneShot(_powerupSfx);
+    }
+
+    public void PlayLightSwitchOnSfx()
+    {
+        _sfxSource.PlayOneShot(_lightSwitchOnSfx);
+    }
+
+    public void PlayLightSwitchOffSfx()
+    {
+        _sfxSource.PlayOneShot(_lightSwitchOffSfx);
     }
 }

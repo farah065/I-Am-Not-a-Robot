@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Enemy
   m_EditorClassIdentifier: 
   MaxHp: 10
-  BaseSpeed: 10
-  BaseCoinDropChance: 0.5
+  BaseSpeed: 0.3
+  BaseCoinDropChance: 0.25

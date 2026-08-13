@@ -27,10 +27,14 @@ public class GameManager : Singleton<GameManager>
         if (_currentWave % 3 == 0)
         {
             _enemyData.MaxHp = Mathf.Min(24, _enemyData.MaxHp + 2);
-            _enemyData.BaseSpeed += 0.1f;
+            _enemyData.BaseSpeed = Mathf.Min(1f, _enemyData.BaseSpeed + 0.05f);
         }
 
-        Spawner.Instance.TotalEnemiesToSpawn = Mathf.Min(30, Spawner.Instance.TotalEnemiesToSpawn + 1);
+        if (_currentWave % 2 == 0)
+        {
+            Spawner.Instance.TotalEnemiesToSpawn = Mathf.Min(20, Spawner.Instance.TotalEnemiesToSpawn + 1);
+            Spawner.Instance.SpawnInterval = Mathf.Max(0.8f, Spawner.Instance.SpawnInterval - 0.02f);
+        }
     }
 
     private void OnEnable()
@@ -55,7 +59,7 @@ public class GameManager : Singleton<GameManager>
         }
 
         _enemyData.MaxHp = 10;
-        _enemyData.BaseSpeed = 0.5f;
+        _enemyData.BaseSpeed = 0.3f;
     }
 
     private void IncrementWave()

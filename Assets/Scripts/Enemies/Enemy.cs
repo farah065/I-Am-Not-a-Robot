@@ -156,6 +156,8 @@ public class Enemy : MonoBehaviour
         {
             collision.GetComponent<Player2D>().TakeDamage();
 
+            TypingManager.Instance.ResetTypedIfMatch(CurrentWord);
+
             Spawner.Instance.RemoveEnemy(this);
             Destroy(gameObject);
         }

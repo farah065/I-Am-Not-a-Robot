@@ -7,10 +7,10 @@ public class Spawner : Singleton<Spawner>
     public Trie EnemyTrie => _enemyTrie;
     public Trie CoinTrie => _coinTrie;
     public Transform PlayerPosition;
-    public int TotalEnemiesToSpawn = 5;
+    public int TotalEnemiesToSpawn = 3;
+    public float SpawnInterval = 3f;
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _coinPrefab;
-    [SerializeField] private float _spawnInterval = 2f;
     [SerializeField] private Transform[] _spawnPoints;
     [SerializeField] private Transform _enemyParent;
     [SerializeField] private Transform _coinParent;
@@ -83,7 +83,7 @@ public class Spawner : Singleton<Spawner>
         {
             SpawnEnemy();
             enemiesToSpawn--;
-            yield return new WaitForSeconds(_spawnInterval);
+            yield return new WaitForSeconds(SpawnInterval);
         }
 
         while (Enemies.Count > 0)
