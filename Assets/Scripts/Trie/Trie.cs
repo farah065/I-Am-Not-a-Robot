@@ -32,7 +32,6 @@ public class Trie
     // Deletion
     public bool Delete(string word)
     {
-        Debug.Log("<color=red>Deleting word: " + word + "</color>");
         return DeleteHelper(root, word, 0);
     }
 
@@ -111,8 +110,7 @@ public class Trie
         TrieNode node = SearchNode(prefix);
         if (node == null)
         {
-            //If the node is null, it logs a message and returns an empty list.
-            Debug.Log("No node found for prefix: " + prefix);
+            //If the node is null, it returns an empty list.
             return new List<string>();
         }
         //Otherwise, it collects all words starting from that node and returns them.

@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Settings : Singleton<Settings>
 {
     [SerializeField] private AudioMixer _audioMixer;
     [SerializeField] private GameObject _settingsMenu;
     [SerializeField] private GameObject _backToDesktopButton;
+    [SerializeField] private Toggle _fullScreenToggle;
     [SerializeField] private VirtualScreen _virtualScreen;
     [SerializeField] private InputActionAsset _inputActions;
     [SerializeField] private GameObject _game;
@@ -62,6 +64,7 @@ public class Settings : Singleton<Settings>
         _backToDesktopButton.SetActive(_game.activeSelf);
         _settingsMenu.SetActive(true);
         _virtualScreen.SetScreenCaster(ScreenCaster.Settings);
+        _fullScreenToggle.isOn = Screen.fullScreen;
     }
 
     public void HideSettings()

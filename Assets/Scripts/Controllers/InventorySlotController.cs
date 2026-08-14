@@ -81,8 +81,6 @@ public class InventorySlotController : MonoBehaviour
         if (PowerupData == null)
             return;
 
-        Debug.Log("Resetting highlight for word: " + PowerupData.TypableName);
-
         // Restore original name
         _nameText.text = PowerupData.TypableName;
     }

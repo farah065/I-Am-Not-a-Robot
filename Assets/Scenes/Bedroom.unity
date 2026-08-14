@@ -1079,6 +1079,7 @@ MonoBehaviour:
   _monitorScreen: {fileID: 1227602256}
   _deskCamera: {fileID: 615091818}
   _interactionTrigger: {fileID: 453268094}
+  computerRenderTexture: {fileID: 8400000, guid: 8a6a04b9b0acffe4c866d127aa5cce30, type: 2}
 --- !u!1 &178029527
 GameObject:
   m_ObjectHideFlags: 0
@@ -16385,6 +16386,7 @@ MonoBehaviour:
   _audioMixer: {fileID: 24100000, guid: 036fc9fb5cc35594d90e75b4d7f8ed69, type: 2}
   _settingsMenu: {fileID: 1505918301}
   _backToDesktopButton: {fileID: 1805027987}
+  _fullScreenToggle: {fileID: 187440775}
   _virtualScreen: {fileID: 1227602261}
   _inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   _game: {fileID: 652704279}

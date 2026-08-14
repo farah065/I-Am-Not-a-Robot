@@ -137,21 +137,15 @@ public class PlayerController : MonoBehaviour
 
             if (hits.Length > 0)
             {
-                Debug.Log($"Found {hits.Length} colliders in box.");
                 foreach (Collider hit in hits)
                 {
                     IInteractable interactable = hit.GetComponentInParent<IInteractable>();
                     if (interactable != null)
                     {
-                        Debug.Log($"Interacting with {hit.name}");
                         interactable.Interact();
                         break; // interact with first valid target
                     }
                 }
-            }
-            else
-            {
-                Debug.Log("No interactables found.");
             }
         }
         else if (_monitorController.IsMonitorOn == false)

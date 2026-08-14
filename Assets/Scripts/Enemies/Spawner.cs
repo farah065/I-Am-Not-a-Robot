@@ -30,10 +30,12 @@ public class Spawner : Singleton<Spawner>
 
     public void Initialise()
     {
+        TotalEnemiesToSpawn = 3;
+        SpawnInterval = 3f;
+
         FillWordsListFromFile();
         _usedWords = new List<string>();
 
-        Debug.Log("<color=green>INITIALISING ENEMY TRIE</color>");
         _enemyTrie = new Trie();
         _coinTrie = new Trie();
 
@@ -108,7 +110,7 @@ public class Spawner : Singleton<Spawner>
     public void AddWordToTrie(string word)
     {
         _enemyTrie.Insert(word);
-        _enemyTrie.PrintAllWords();
+        //_enemyTrie.PrintAllWords();
     }
 
     private void SpawnEnemy()

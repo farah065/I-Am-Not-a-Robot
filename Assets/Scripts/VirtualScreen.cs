@@ -27,6 +27,8 @@ public class VirtualScreen : GraphicRaycaster
     // Called by Unity when a Raycaster should raycast because it extends BaseRaycaster.
     public override void Raycast(PointerEventData eventData, List<RaycastResult> resultAppendList)
     {
+        if (screenCamera == null || screenCamera.targetTexture == null || screenCaster == null) { return; }
+
         Ray ray = eventCamera.ScreenPointToRay(eventData.position); // Mouse
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
